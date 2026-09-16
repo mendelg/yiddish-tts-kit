@@ -24,7 +24,7 @@ cd "$REPO"
 [[ -x .venv/bin/python ]] || uv venv --python 3.11 .venv
 uv pip install -q --python .venv/bin/python torch torchaudio --index-url "$TORCH_INDEX"
 uv pip install -q --python .venv/bin/python "transformers==4.51.3" "datasets==3.5.0" "accelerate==1.6.0" peft diffusers \
-    librosa soundfile resampy numpy scipy ml-collections absl-py tqdm pytest tensorboard pyarrow hf_xet
+    librosa soundfile resampy numpy scipy ml-collections absl-py tqdm pytest tensorboard pyarrow hf_xet wandb
 uv pip install -q --python .venv/bin/python --no-deps -e .
 .venv/bin/python -c "import torch; assert torch.cuda.is_available(); print('torch', torch.__version__, 'on', torch.cuda.get_device_name(0))"
 .venv/bin/python -m pytest tests -q 2>&1 | tail -1
@@ -37,6 +37,7 @@ Setup done.
   kit:      $KIT
 Next:
   hf auth login                                   # member of Yiddish-AI for the private sources
+  wandb login                                     # optional: streams training curves to wandb.ai
   cd $KIT
   \$PY data/materialize.py --manifest manifest/manifest.parquet --out $WORK/vibevoice-data/mix_v1 \\
       --sources teef_windows,studio,hasidic24,crowd_recital,crowd_whatsapp --min-quality 0.9

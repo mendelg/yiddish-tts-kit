@@ -27,6 +27,7 @@ and reactions are modelled rather than stitched.
 ```bash
 curl -fsSL https://raw.githubusercontent.com/mendelg/yiddish-tts-kit/main/setup_pod.sh | bash
 hf auth login                      # member of Yiddish-AI (private sources)
+wandb login                        # optional: live training curves at wandb.ai (free account)
 cd /workspace/yiddish-tts-kit && PY=/workspace/VibeVoice/.venv/bin/python
 $PY data/materialize.py --manifest manifest/manifest.parquet --out /workspace/vibevoice-data/mix_v1 \
     --sources teef_windows,studio,hasidic24,crowd_recital,crowd_whatsapp --min-quality 0.9
@@ -38,7 +39,8 @@ MODEL=vibevoice/VibeVoice-1.5B RUN=mix_v1 MANIFEST_DIR=/workspace/vibevoice-data
 (torch for CUDA 12.8), runs the fork's tests, and clones this kit. Everything lives under `/workspace`, so it
 survives Pod restarts; a fresh Pod needs only the one command again. `materialize.py` downloads just the clips a
 run uses (paced for the Hub's rate limit) and converts them to 24 kHz; the launcher picks batch size from GPU
-memory and keeps the last 4 checkpoints.
+memory and keeps the last 4 checkpoints. If `wandb login` was run (or `WANDB_API_KEY` is set) the run streams to
+Weights & Biases, project `yiddish-vibevoice`, named after `RUN`; TensorBoard logs are always written to the run dir.
 
 Checkpoints land in `/workspace/vibevoice-runs/<RUN>/checkpoint-*/lora`; copy one to the Mac and render:
 

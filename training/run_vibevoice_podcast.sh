@@ -65,6 +65,14 @@ elif (( GPU_GB >= 70 )); then BS=4; ACC=4; CKPT=False; elif (( GPU_GB >= 40 )); 
 BS=${BATCH:-$BS}; ACC=${ACCUM:-$ACC}   # BATCH= / ACCUM= override the automatic choice (keep BATCH*ACCUM = 16)
 echo "MODEL $MODEL on GPU ${GPU_GB} GB -> batch $BS x accumulation $ACC, gradient checkpointing $CKPT"
 
+# Weights & Biases: set WANDB_API_KEY (or run `wandb login` once on the Pod) and the run streams to wandb.ai.
+# WANDB_PROJECT names the project (default yiddish-vibevoice); the run is named after $RUN. Otherwise TensorBoard only.
+if [[ -n ${WANDB_API_KEY:-} ]] || [[ -s ${HOME}/.netrc && $(grep -c api.wandb.ai "${HOME}/.netrc") -gt 0 ]]; then
+  export WANDB_PROJECT=${WANDB_PROJECT:-yiddish-vibevoice} WANDB_NAME=${WANDB_NAME:-$RUN} WANDB_DIR=${WANDB_DIR:-$WORK/wandb}
+  REPORT_TO="tensorboard wandb"; echo "wandb: project $WANDB_PROJECT, run $WANDB_NAME"
+else
+  REPORT_TO=tensorboard; echo "wandb: not configured (set WANDB_API_KEY to enable)"
+fi
 mkdir -p "$OUT"
 $PY -m vibevoice.finetune.train_vibevoice \
   --model_name_or_path "$MODEL" \
@@ -75,7 +83,7 @@ $PY -m vibevoice.finetune.train_vibevoice \
   --per_device_train_batch_size "$BS" --gradient_accumulation_steps "$ACC" --gradient_checkpointing "$CKPT" \
   --learning_rate 2.5e-5 --lr_scheduler_type cosine --warmup_ratio 0.03 --num_train_epochs "${EPOCHS:-8}" \
   --logging_steps 10 --save_steps "${SAVE_STEPS:-100}" --save_total_limit "${SAVE_LIMIT:-4}" --eval_strategy steps --eval_steps "${SAVE_STEPS:-100}" --do_eval \
-  --report_to tensorboard --remove_unused_columns False --bf16 True --do_train --save_only_model True \
+  --report_to $REPORT_TO --remove_unused_columns False --bf16 True --do_train --save_only_model True \
   --gradient_clipping --max_grad_norm 0.8 \
   --ddpm_batch_mul 4 --diffusion_loss_weight 1.4 --train_diffusion_head True \
   --ce_loss_weight "${CE_WEIGHT:-1.0}" --ce_include_speech_tokens "${CE_CONTINUE:-True}" --ce_skip_text_prefix "${CE_SKIP_PREFIX:-True}" \
