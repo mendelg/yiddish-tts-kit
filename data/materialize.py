@@ -33,7 +33,7 @@ def fetch_files(rows, cache: Path, workers: int):
     from huggingface_hub import snapshot_download
     by_repo = defaultdict(set)
     for r in rows:
-        if r["codec"] != "mp3_in_parquet":
+        if r["codec"] != "mp3_in_parquet" and r["source"] != "broadcast24":
             by_repo[r["source_repo"]].add(r["source_path"])
     for repo, paths in by_repo.items():
         local = cache / "src" / repo.replace("/", "__")
@@ -47,6 +47,32 @@ def fetch_files(rows, cache: Path, workers: int):
         with ThreadPoolExecutor(workers) as pool:
             list(pool.map(lambda j: to_wav24k(*j), jobs))
         print(f"{repo}: {len(paths)} clips ready", flush=True)
+
+
+def fetch_broadcast(rows, cache: Path, workers: int):
+    """broadcast24: download the ~30 min source recordings and cut each clip locally (start/end are in `note`)."""
+    import re
+    from huggingface_hub import snapshot_download
+    rs = [r for r in rows if r["source"] == "broadcast24"]
+    if not rs: return
+    repo = rs[0]["source_repo"]
+    recs = sorted({r["recording_id"] for r in rs})
+    local = cache / "src" / repo.replace("/", "__")
+    patterns = [f"yiddish24/source_audio/{rec}.wav" for rec in recs]
+    for attempt in range(60):
+        try:
+            snapshot_download(repo, repo_type="dataset", local_dir=str(local), allow_patterns=patterns, max_workers=4); break
+        except Exception as e:
+            print(f"{repo} sources: paused by {str(e).splitlines()[0][:120]}; sleeping 300 s", flush=True); time.sleep(300)
+    def cut(r):
+        dest = local_path(r, cache)
+        if dest.exists() and dest.stat().st_size > 1000: return
+        m = re.search(r"start=([0-9.]+) end=([0-9.]+)", r["note"]); s, e = float(m.group(1)), float(m.group(2))
+        dest.parent.mkdir(parents=True, exist_ok=True); tmp = dest.with_suffix(".tmp.wav")
+        subprocess.run(["ffmpeg", "-nostdin", "-v", "error", "-y", "-ss", f"{s:.3f}", "-i", str(local / f"yiddish24/source_audio/{r['recording_id']}.wav"),
+                        "-t", f"{e - s:.3f}", "-ar", "24000", "-ac", "1", "-c:a", "pcm_s16le", str(tmp)], check=True); tmp.replace(dest)
+    with ThreadPoolExecutor(workers) as pool: list(pool.map(cut, rs))
+    print(f"broadcast24: {len(rs)} clips cut from {len(recs)} recordings", flush=True)
 
 
 def fetch_parquet(rows, cache: Path):
@@ -108,6 +134,18 @@ def main():
     by_spk = defaultdict(list)
     for r in rows: by_spk[r["speaker"]].append(r)
     for spk, rs in by_spk.items():
+        if rs and rs[0]["source"] == "broadcast24":
+            # take whole recordings so the clips can be cut from a few source files instead of thousands of downloads
+            by_rec = defaultdict(list)
+            for r in rs: by_rec[r["recording_id"]].append(r)
+            recs = sorted(by_rec); rng.shuffle(recs)
+            total, keep = 0.0, []
+            for rec in recs:
+                d = sum(float(r["duration"] or 0) for r in by_rec[rec])
+                if total + d > a.cap_hours_per_speaker * 3600: continue
+                keep.extend(by_rec[rec]); total += d
+            rs[:] = keep[: a.cap_per_speaker * 10]
+            continue
         rng.shuffle(rs); del rs[a.cap_per_speaker:]
         total, keep = 0.0, []
         for r in rs:
@@ -119,7 +157,7 @@ def main():
     print(f"selected {len(rows)} rows from {len(by_spk)} speakers", flush=True)
     if a.dry_run: return
     a.cache.mkdir(parents=True, exist_ok=True)
-    fetch_files(rows, a.cache, a.workers); fetch_parquet(rows, a.cache)
+    fetch_files(rows, a.cache, a.workers); fetch_broadcast(rows, a.cache, a.workers); fetch_parquet(rows, a.cache)
     for r in rows:
         r["local"] = local_path(r, a.cache); r["dur"] = seconds(r["local"])
 
