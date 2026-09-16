@@ -22,24 +22,23 @@ training rows and fixes two upstream training bugs (the LM never learned to *kee
 output head was mis-tied). A whole two-speaker conversation is generated in one pass, so turn-taking
 and reactions are modelled rather than stitched.
 
-## Quick start (Pod)
+## Quick start (new Pod)
 
 ```bash
-git clone --branch podcast-finetuning https://github.com/mendelg/VibeVoice /workspace/VibeVoice
-cd /workspace/VibeVoice && uv venv --python 3.11 .venv && uv pip install --python .venv/bin/python \
-   torch torchaudio --index-url https://download.pytorch.org/whl/cu128 && uv pip install --python .venv/bin/python \
-   "transformers==4.51.3" "datasets==3.5.0" "accelerate==1.6.0" peft diffusers librosa soundfile resampy \
-   ml-collections absl-py tqdm pytest tensorboard pyarrow && uv pip install --python .venv/bin/python --no-deps -e .
+curl -fsSL https://raw.githubusercontent.com/mendelg/yiddish-tts-kit/main/setup_pod.sh | bash
 hf auth login                      # member of Yiddish-AI (private sources)
-
-git clone https://github.com/mendelg/yiddish-tts-kit /workspace/yiddish-tts-kit && cd /workspace/yiddish-tts-kit
-PY=/workspace/VibeVoice/.venv/bin/python
-$PY data/build_manifest.py --out manifest                 # or use the committed manifest/
+cd /workspace/yiddish-tts-kit && PY=/workspace/VibeVoice/.venv/bin/python
 $PY data/materialize.py --manifest manifest/manifest.csv --out /workspace/vibevoice-data/mix_v1 \
     --sources teef_windows,studio,crowd_recital,crowd_whatsapp --min-quality 0.9
 MODEL=vibevoice/VibeVoice-1.5B RUN=mix_v1 MANIFEST_DIR=/workspace/vibevoice-data/mix_v1 VOICE_DROP=0.1 EPOCHS=2 \
     bash training/run_vibevoice_podcast.sh --skip-install
 ```
+
+`setup_pod.sh` installs ffmpeg and uv, clones the VibeVoice fork, creates its venv with pinned dependencies
+(torch for CUDA 12.8), runs the fork's tests, and clones this kit. Everything lives under `/workspace`, so it
+survives Pod restarts; a fresh Pod needs only the one command again. `materialize.py` downloads just the clips a
+run uses (paced for the Hub's rate limit) and converts them to 24 kHz; the launcher picks batch size from GPU
+memory and keeps the last 4 checkpoints.
 
 Checkpoints land in `/workspace/vibevoice-runs/<RUN>/checkpoint-*/lora`; copy one to the Mac and render:
 
