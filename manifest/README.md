@@ -11,7 +11,7 @@ configs:
 
 # Hasidic Yiddish speech mix (manifest)
 
-One table over five speech datasets, restricted to **Hasidic (Central) Yiddish** pronunciation, for training
+One table over six speech sources (five repositories), restricted to **Hasidic (Central) Yiddish** pronunciation, for training
 conversational TTS. This repo holds **no audio**: every row links to the clip in its source repository
 (`url`, or parquet shard + `row_index` for the ivrit.ai sets). Fetch and convert what you need with
 `data/materialize.py` from [mendelg/yiddish-tts-kit](https://github.com/mendelg/yiddish-tts-kit).
@@ -23,9 +23,10 @@ conversational TTS. This repo holds **no audio**: every row links to the clip in
 | hasidic24 | 3877 | 8.4 | 19 | 2950 | machine_yiddishlabs |
 | crowd_recital | 13722 | 76.6 | 67 | 13722 | recital_aligned_to_read_text |
 | crowd_whatsapp | 3613 | 19.8 | 576 | 3613 | crowd_transcribed_aligned |
+| broadcast24 | 107237 | 149.8 | 2 | 107237 | machine_whisper_unverified |
 
 Hours are summed from known clip durations. Speaker counts: studio and crowd ids are real speakers; hasidic24
-uses one id per yiddish24 category (one speaker each except the two-host programme); Teef Teef labels are
+uses one id per yiddish24 category; broadcast24 has two narrators (klar, spitzer) (one speaker each except the two-host programme); Teef Teef labels are
 per-episode diarization labels, not linked across episodes.
 
 ## Sources and filters
@@ -37,6 +38,7 @@ per-episode diarization labels, not linked across episodes.
 | hasidic24 | Yiddish-AI/yiddish24-hasidic-speech | machine (Yiddish Labs API) | `tts_ok` rows; the two-host programme (`dresdner_shmeltzer_conversation`) has `tts_ok=false` until diarized |
 | crowd_recital | ivrit-ai/crowd-recital-yi-whisper-training | aligned to the text that was read | all; use `quality_score` |
 | crowd_whatsapp | ivrit-ai/crowd-whatsapp-yi-whisper-training | crowd transcripts, aligned | all; use `quality_score` |
+| broadcast24 | Yiddish-AI/yiddish-tts (`yiddish24` config) | Whisper, unverified | `clean` rows (no digits/Latin); two narrators, cap hours per narrator when training |
 
 ## Columns
 

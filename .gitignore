@@ -4,3 +4,5 @@ __pycache__/
 *.mp3
 outputs/
 *.log
+manifest/manifest.csv
+manifest/studio-durations.csv

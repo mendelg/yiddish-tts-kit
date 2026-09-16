@@ -7,6 +7,7 @@
 | hasidic24 | Yiddish-AI/yiddish24-hasidic-speech | bulletin, shiurim, programmes, 24 kHz | machine (Yiddish Labs) | `tts_ok` rows; two-host programme flagged not usable until diarized |
 | crowd_recital | ivrit-ai/crowd-recital-yi-whisper-training | crowd read-aloud, 30 s windows, 16 kHz mp3 in parquet | aligned to the read text | all (filter by quality_score) |
 | crowd_whatsapp | ivrit-ai/crowd-whatsapp-yi-whisper-training | crowd voice notes, 30 s windows | crowd transcripts | all (filter by quality_score) |
+| broadcast24 | Yiddish-AI/yiddish-tts (yiddish24 config) | 180 h, two yiddish24 news narrators (klar, spitzer), 16 kHz | Whisper, unverified | `clean` rows; materialize caps hours per narrator (default 15 h) so two voices do not swamp the mix |
 
 Speaker ids: studio `speaker_id`; hasidic24 category id (one speaker per category except the programmes);
 crowd sets `user_id`; Teef Teef per-episode diarization labels (not linked across episodes).

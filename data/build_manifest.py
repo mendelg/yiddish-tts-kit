@@ -12,6 +12,8 @@ Sources and policy (Hasidic pronunciation only):
                                                              the two-host conversation programme is kept but flagged
   crowd_recital   ivrit-ai/crowd-recital-yi-whisper-training crowd read-aloud, 30 s windows, aligned to the read text
   crowd_whatsapp  ivrit-ai/crowd-whatsapp-yi-whisper-training crowd voice notes with crowd transcripts, 30 s windows
+  broadcast24     Yiddish-AI/yiddish-tts (yiddish24 config)  180 h, two yiddish24 news narrators, unverified Whisper text;
+                                                             clean rows only; cap hours per narrator at materialize time
 """
 import argparse, csv, io, json, re
 from collections import Counter, defaultdict
@@ -116,6 +118,30 @@ def crowd(api, repo, source, quality_label):
                            split=split, tts_ok=True, note=f"seek={md['seek']:.2f}s in entry; segment times in source transcript"))
     return out
 
+def broadcast24(api):
+    repo = "Yiddish-AI/yiddish-tts"
+    p = hf_hub_download(repo, "yiddish24/metadata.csv", repo_type="dataset")
+    rows = list(csv.DictReader(open(p, encoding="utf-8")))
+    recs = sorted({r["source_id"] for r in rows})
+    import hashlib
+    held = {rec for rec in recs if int(hashlib.sha256(rec.encode()).hexdigest()[:8], 16) % 100 < 3}  # ~3% of recordings -> validation
+    out, dropped = [], Counter()
+    for r in rows:
+        if r["clean"] != "true":
+            dropped["not_clean"] += 1; continue
+        if YIVO.search(r["text"]):
+            dropped["yivo_marks"] += 1; continue
+        path = "yiddish24/" + r["file_name"]; narrator = r["source_id"].split("_")[0]
+        dur = round(float(r["end_time"]) - float(r["start_time"]), 3)
+        out.append(row(id=f"b24_{Path(path).stem}", source="broadcast24", source_repo=repo, source_path=path, url=url_for(repo, path),
+                       text=" ".join(r["text"].split()), num_lines=1, num_speakers=1, speaker=f"b24_{narrator}", speaker_reliable=True,
+                       recording_id=r["source_id"], duration=dur, sample_rate=16000, codec="wav",
+                       transcript_quality="machine_whisper_unverified", quality_score=None,
+                       split="validation" if r["source_id"] in held else "train", tts_ok=True,
+                       note=f"start={r['start_time']} end={r['end_time']} in yiddish24/source_audio/{r['source_id']}.wav; nikud+ipa in source"))
+    print("broadcast24 dropped:", dict(dropped))
+    return out
+
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -125,7 +151,8 @@ def main():
     rows = []
     for fn, args in [(teef_windows, ()), (studio, ()), (hasidic24, ()),
                      (crowd, ("ivrit-ai/crowd-recital-yi-whisper-training", "crowd_recital", "recital_aligned_to_read_text")),
-                     (crowd, ("ivrit-ai/crowd-whatsapp-yi-whisper-training", "crowd_whatsapp", "crowd_transcribed_aligned"))]:
+                     (crowd, ("ivrit-ai/crowd-whatsapp-yi-whisper-training", "crowd_whatsapp", "crowd_transcribed_aligned")),
+                     (broadcast24, ())]:
         part = fn(api, *args); rows.extend(part); print(f"{part[0]['source']}: {len(part)} rows", flush=True)
     a.out.mkdir(parents=True, exist_ok=True)
     with (a.out / "manifest.csv").open("w", encoding="utf-8", newline="") as f:

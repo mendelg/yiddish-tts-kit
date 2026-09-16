@@ -84,25 +84,37 @@ def seconds(p: Path) -> float:
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--manifest", type=Path, default=Path("manifest/manifest.csv"))
+    ap.add_argument("--manifest", type=Path, default=Path("manifest/manifest.parquet"), help=".parquet or .csv")
     ap.add_argument("--cache", type=Path, default=Path("/workspace/mix-cache"))
     ap.add_argument("--out", type=Path, default=Path("/workspace/vibevoice-data/mix_v1"))
-    ap.add_argument("--sources", default="teef_windows,studio,hasidic24,crowd_recital,crowd_whatsapp")
+    ap.add_argument("--sources", default="teef_windows,studio,hasidic24,crowd_recital,crowd_whatsapp,broadcast24")
     ap.add_argument("--min-quality", type=float, default=0.0, help="Drop rows below this quality_score")
     ap.add_argument("--chain-below", type=float, default=15.0, help="Chain single-speaker rows shorter than this")
     ap.add_argument("--chain-min", type=float, default=20.0); ap.add_argument("--chain-max", type=float, default=40.0)
     ap.add_argument("--repeat", default="teef_windows=2", help="source=n repeats in the training split")
-    ap.add_argument("--cap-per-speaker", type=int, default=3000)
+    ap.add_argument("--cap-per-speaker", type=int, default=3000, help="Max rows per speaker")
+    ap.add_argument("--cap-hours-per-speaker", type=float, default=15.0, help="Max audio hours per speaker (uses manifest durations)")
     ap.add_argument("--workers", type=int, default=16); ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args(); rng = random.Random(a.seed)
     want = set(a.sources.split(","))
-    rows = [r for r in csv.DictReader(a.manifest.open(encoding="utf-8"))
-            if r["source"] in want and r["tts_ok"] == "True" and float(r["quality_score"] or 0) >= a.min_quality and r["split"] != "test"]
+    if a.manifest.suffix == ".parquet":
+        import pyarrow.parquet as pq
+        raw = [{k: ("" if v is None else str(v)) for k, v in r.items()} for r in pq.read_table(a.manifest).to_pylist()]
+    else:
+        raw = list(csv.DictReader(a.manifest.open(encoding="utf-8")))
+    rows = [r for r in raw
+            if r["source"] in want and r["tts_ok"] == "True" and float(r["quality_score"] or 1.0) >= a.min_quality and r["split"] != "test"]
     by_spk = defaultdict(list)
     for r in rows: by_spk[r["speaker"]].append(r)
     for spk, rs in by_spk.items():
         rng.shuffle(rs); del rs[a.cap_per_speaker:]
+        total, keep = 0.0, []
+        for r in rs:
+            d = float(r["duration"] or 0)
+            if total + d > a.cap_hours_per_speaker * 3600: continue
+            keep.append(r); total += d
+        rs[:] = keep
     rows = [r for rs in by_spk.values() for r in rs]
     print(f"selected {len(rows)} rows from {len(by_spk)} speakers", flush=True)
     if a.dry_run: return
