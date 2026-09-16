@@ -29,7 +29,7 @@ curl -fsSL https://raw.githubusercontent.com/mendelg/yiddish-tts-kit/main/setup_
 hf auth login                      # member of Yiddish-AI (private sources)
 cd /workspace/yiddish-tts-kit && PY=/workspace/VibeVoice/.venv/bin/python
 $PY data/materialize.py --manifest manifest/manifest.csv --out /workspace/vibevoice-data/mix_v1 \
-    --sources teef_windows,studio,crowd_recital,crowd_whatsapp --min-quality 0.9
+    --sources teef_windows,studio,hasidic24,crowd_recital,crowd_whatsapp --min-quality 0.9
 MODEL=vibevoice/VibeVoice-1.5B RUN=mix_v1 MANIFEST_DIR=/workspace/vibevoice-data/mix_v1 VOICE_DROP=0.1 EPOCHS=2 \
     bash training/run_vibevoice_podcast.sh --skip-install
 ```

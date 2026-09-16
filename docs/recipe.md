@@ -11,7 +11,7 @@ collapsed generation length within 600 steps. With the fix, full scripts render 
 **chained** into 20-40 s multi-line rows with 0.3-0.8 s pauses; unchained short clips taught the model that a
 clean short prompt means a short utterance, so an unseen clean voice stopped after one line.
 
-**Text quality beats quantity.** Whisper transcripts at 0.85 confidence still carry wrong words that become wrong
+**Text quality beats quantity.** The yiddish24 (hasidic24) machine transcripts were spot-checked by a native listener and judged good; they stay in.  Whisper transcripts at 0.85 confidence still carry wrong words that become wrong
 pronunciations. Verified text (studio set, recital) fixed clarity. Drop `reyd_*` (YIVO/standard Yiddish).
 
 **Voices.** Reference clips must be 8-12 s, one speaker, clean; 18 s prompts derailed generation. Any language
