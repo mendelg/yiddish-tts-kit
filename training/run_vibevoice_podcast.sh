@@ -59,9 +59,9 @@ MANIFEST_DIR=${MANIFEST_DIR:-$PODCAST_DIR}
 GPU_GB=$(nvidia-smi --query-gpu=memory.total --format=csv,noheader,nounits | head -1 | awk '{printf "%d", $1/1024}')
 if [[ $MODEL == *7B* ]]; then
   # 7B: ~15 GB of weights in bf16 plus the fully trained diffusion head; keep micro-batches small.
-  if (( GPU_GB >= 90 )); then BS=4; ACC=4; elif (( GPU_GB >= 70 )); then BS=2; ACC=8; else BS=1; ACC=16; fi; CKPT=True
+  if (( GPU_GB >= 130 )); then BS=8; ACC=2; elif (( GPU_GB >= 90 )); then BS=4; ACC=4; elif (( GPU_GB >= 70 )); then BS=2; ACC=8; else BS=1; ACC=16; fi; CKPT=True
   EPOCHS=${EPOCHS:-4}
-elif (( GPU_GB >= 70 )); then BS=4; ACC=4; CKPT=False; elif (( GPU_GB >= 40 )); then BS=2; ACC=8; CKPT=True; else BS=1; ACC=16; CKPT=True; fi
+elif (( GPU_GB >= 130 )); then BS=8; ACC=2; CKPT=False; elif (( GPU_GB >= 70 )); then BS=4; ACC=4; CKPT=False; elif (( GPU_GB >= 40 )); then BS=2; ACC=8; CKPT=True; else BS=1; ACC=16; CKPT=True; fi
 BS=${BATCH:-$BS}; ACC=${ACCUM:-$ACC}   # BATCH= / ACCUM= override the automatic choice (keep BATCH*ACCUM = 16)
 echo "MODEL $MODEL on GPU ${GPU_GB} GB -> batch $BS x accumulation $ACC, gradient checkpointing $CKPT"
 
