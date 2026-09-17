@@ -21,8 +21,17 @@ proc = WhisperProcessor.from_pretrained(M); model = WhisperForConditionalGenerat
 print(f"{'file':28s} {'sec':>5s} {'w/s':>5s} {'sim':>5s} {'end':>4s}")
 for w in a.wavs:
     x, _ = librosa.load(w, sr=16000, mono=True); out = []
-    for i in range(0, len(x), 16000 * 30):
-        ch = x[i:i + 16000 * 30]
+    # Cut into <=30 s windows at the quietest point near each boundary, not at a fixed 30.0 s: a fixed cut lands
+    # mid-word and Whisper then drops the words around it, which looked like "skipped turns" in the render.
+    import numpy as np
+    hop = 1600; rms = librosa.feature.rms(y=x, frame_length=3200, hop_length=hop)[0]
+    cuts = [0]
+    while len(x) - cuts[-1] > 16000 * 30:
+        target = cuts[-1] + 16000 * 27; lo, hi = (target - 16000 * 5) // hop, (target + 16000 * 3) // hop
+        cuts.append(int((lo + np.argmin(rms[lo:hi])) * hop))
+    cuts.append(len(x))
+    for i, j in zip(cuts, cuts[1:]):
+        ch = x[i:j]
         if len(ch) < 8000: break
         f = proc(ch, sampling_rate=16000, return_tensors="pt").input_features.to("mps")
         with torch.no_grad(): ids = model.generate(f, language="yi", task="transcribe", max_new_tokens=220)
@@ -31,4 +40,4 @@ for w in a.wavs:
     sim = difflib.SequenceMatcher(None, script, hyp).ratio()
     tail = " ".join(hyp.split()[-12:]); reached = difflib.SequenceMatcher(None, " ".join(last[-4:]), tail).find_longest_match(0, len(" ".join(last[-4:])), 0, len(tail)).size >= 6
     print(f"{Path(w).stem:28s} {sec:5.1f} {len(hyp.split())/sec:5.2f} {sim:5.2f} {'yes' if reached else 'no':>4s}")
-    print("   ", " ".join(out)[:400].replace("\n", " "))
+    print("   ", " ".join(out).replace("\n", " "))
