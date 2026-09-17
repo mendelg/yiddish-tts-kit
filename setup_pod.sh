@@ -41,6 +41,7 @@ Next:
   cd $KIT
   \$PY data/materialize.py --manifest manifest/manifest.parquet --out $WORK/vibevoice-data/mix_v1 \\
       --sources teef_windows,studio,hasidic24,crowd_recital,crowd_whatsapp --min-quality 0.9
+  \$PY data/check_audio.py --data $WORK/vibevoice-data/mix_v1        # drop silent/broken clips
   MODEL=vibevoice/VibeVoice-1.5B RUN=mix_v1 MANIFEST_DIR=$WORK/vibevoice-data/mix_v1 VOICE_DROP=0.1 EPOCHS=2 \\
       bash training/run_vibevoice_podcast.sh --skip-install
 MSG
