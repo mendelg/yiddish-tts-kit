@@ -27,7 +27,7 @@ and reactions are modelled rather than stitched.
 ```bash
 curl -fsSL https://raw.githubusercontent.com/mendelg/yiddish-tts-kit/main/setup_pod.sh | bash
 hf auth login                      # member of Yiddish-AI (private sources)
-wandb login                        # optional: live training curves at wandb.ai (free account)
+wandb login                        # optional: live training curves at wandb.ai; team-only accounts also need WANDB_ENTITY=<team>
 cd /workspace/yiddish-tts-kit && PY=/workspace/VibeVoice/.venv/bin/python
 $PY data/materialize.py --manifest manifest/manifest.parquet --out /workspace/vibevoice-data/mix_v1 \
     --sources teef_windows,studio,hasidic24,crowd_recital,crowd_whatsapp --min-quality 0.9
