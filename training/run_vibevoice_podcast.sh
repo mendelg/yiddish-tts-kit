@@ -44,8 +44,15 @@ cd "$REPO"; PY=$REPO/.venv/bin/python
 # RunPod images set HF_HUB_ENABLE_HF_TRANSFER=1; without the package, downloads fail as "file not found".
 if ! $PY -c "import hf_transfer" 2>/dev/null; then export HF_HUB_ENABLE_HF_TRANSFER=0; fi
 
+# With MANIFEST_DIR pointing at ready train/validation.jsonl (e.g. from data/materialize.py) skip the Teef Teef
+# export/window steps entirely; they only apply to the original single-source Pod layout.
+if [[ -n ${MANIFEST_DIR:-} && -s $MANIFEST_DIR/train.jsonl ]]; then
+  echo "Using manifests in $MANIFEST_DIR ($(wc -l < "$MANIFEST_DIR/train.jsonl") train rows)"
+  (( DRY )) && exit 0
+else
 mkdir -p "$DATA"
-[[ -s $DATA/episodes.jsonl ]] || $PY "$HERE/export_teef_teef_episodes.py" --root "$ASR_ROOT" --out "$DATA/episodes.jsonl"
+KIT_DATA="$(cd "$HERE/.." && pwd)/data"; EXPORT="$HERE/export_teef_teef_episodes.py"; [[ -f $EXPORT ]] || EXPORT="$KIT_DATA/export_teef_teef_episodes.py"
+[[ -s $DATA/episodes.jsonl ]] || $PY "$EXPORT" --root "$ASR_ROOT" --out "$DATA/episodes.jsonl"
 
 PREP=( -m vibevoice.finetune.prepare_podcast_jsonl --episodes "$DATA/episodes.jsonl" --out "$PODCAST_DIR"
        --min-seconds 8 --max-seconds "$MAX_SECONDS" --max-gap 2.0 --merge-gap "$MERGE_GAP" --require-speaker-change
@@ -53,6 +60,7 @@ PREP=( -m vibevoice.finetune.prepare_podcast_jsonl --episodes "$DATA/episodes.js
 $PY "${PREP[@]}" --dry-run
 (( DRY )) && exit 0
 [[ -s $PODCAST_DIR/train.jsonl ]] || $PY "${PREP[@]}"
+fi
 # MANIFEST_DIR= points training at a different train/validation.jsonl pair (e.g. the studio+podcast merge).
 MANIFEST_DIR=${MANIFEST_DIR:-$PODCAST_DIR}
 
