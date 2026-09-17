@@ -38,7 +38,7 @@ def main():
     levels = set(a.conf.split(",")); tot = sum(cnt.values()); byconf: collections.Counter[str] = collections.Counter(); rows = []
     for w, c in cnt.most_common():
         d = detail(w); conf = d.get("confidence", "?"); byconf[conf] += c
-        if conf in levels and c >= a.min_count and (a.all or w not in ph.overrides):
+        if conf in levels and c >= a.min_count and (a.all or (w not in ph.overrides and w not in ph.verified)):
             rows.append([w, c, conf, d.get("route", ""), d.get("reason", ""), d.get("ipa_primary", ""), ph.overrides.get(w, ""), example[w][:90]])
     print(f"# tokens={tot} unique={len(cnt)} " + " ".join(f"{k}={v}({100*v/max(tot,1):.1f}%)" for k, v in byconf.most_common()), file=sys.stderr)
     print("word\tcount\tconf\troute\treason\tengine_ipa\toverride\texample")

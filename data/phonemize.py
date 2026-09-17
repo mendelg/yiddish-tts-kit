@@ -23,6 +23,13 @@ SPEAKER = re.compile(r"^(\s*Speaker\s+\d+\s*:\s*)(.*)$", re.IGNORECASE)
 PUNCT = "״\"'.,!?;:()[]«»-–—…"
 HEBREW = re.compile(r"[\u05d0-\u05ea]")
 DEFAULT_OVERRIDES = Path(__file__).with_name("g2p_overrides.tsv")
+DEFAULT_VERIFIED = Path(__file__).with_name("g2p_verified.txt")
+
+
+def load_verified(path: str | Path | None = None) -> set[str]:
+    p = Path(path) if path else DEFAULT_VERIFIED
+    if not p.exists(): return set()
+    return {l.strip() for l in p.read_text(encoding="utf-8").splitlines() if l.strip() and not l.startswith("#")}
 
 
 INVENTORY = set("abdfghjklmnprstvzxʃʒʦʧʤŋɡɛəiuɔˈː ")  # engine's closed phone set (+ ej aj ɔj oʊ built from these)
@@ -64,7 +71,7 @@ class Phonemizer:
         sys.path.insert(0, str(self.src))
         from yiddish_labels import text_to_ipa, token_detail  # noqa: E402
         self._to_ipa = text_to_ipa; self.token_detail = token_detail
-        self.overrides = load_overrides(overrides)
+        self.overrides = load_overrides(overrides); self.verified = load_verified()
         self.max_words = max([len(k.split()) for k in self.overrides] + [1])
         self.fingerprint = hashlib.sha1(json.dumps(sorted(self.overrides.items()), ensure_ascii=False).encode()).hexdigest()[:12]
         self.cache_path = Path(cache_path) if cache_path else None
@@ -96,6 +103,17 @@ class Phonemizer:
                 span.append(toks[i]); i += 1
         flush()
         return " ".join(out)
+
+    def unsure(self, text: str) -> list[str]:
+        """Words the engine marks MED/LOW that nobody has reviewed yet (not overridden, not in g2p_verified.txt)."""
+        seen: dict[str, str] = {}
+        for sent in self.sentences(text):
+            for tok in sent.split():
+                w = split_punct(tok)[1]
+                if w and HEBREW.search(w) and w not in seen and w not in self.overrides and w not in self.verified:
+                    d = self.token_detail(w)
+                    if d.get("confidence") in ("LOW", "MED"): seen[w] = f"{w} -> {d.get('ipa_primary')} [{d.get('confidence')}]"
+        return list(seen.values())
 
     @staticmethod
     def dropped(text: str) -> list[str]:
