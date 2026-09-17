@@ -43,6 +43,9 @@ run uses (paced for the Hub's rate limit) and converts them to 24 kHz; the launc
 memory and keeps the last 4 checkpoints. If `wandb login` was run (or `WANDB_API_KEY` is set) the run streams to
 Weights & Biases, project `yiddish-vibevoice`, named after `RUN`; TensorBoard logs are always written to the run dir.
 
+For phonetic input (better pronunciation): unzip the Phonikud-yi engine bundle, `export PHONIKUD_YI_BUNDLE=<dir>`,
+add `--text-mode ipa` to materialize and `--phonemize` to the render command.
+
 Checkpoints land in `/workspace/vibevoice-runs/<RUN>/checkpoint-*/lora`; copy one to the Mac and render:
 
 ```bash

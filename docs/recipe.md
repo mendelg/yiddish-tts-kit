@@ -30,3 +30,11 @@ the row ids; the upstream EMA-of-head callback is off by default (its swap-back 
 
 **Ops.** Pod: HF_HUB_ENABLE_HF_TRANSFER blocks the xet bulk path, disable it for many-small-file downloads;
 Hub rate limit is 3000 API calls / 5 min (the materializer paces itself). Checkpoints: `--save_only_model`.
+
+**Pronunciation (next round, Sept 17).** A native listener rated words ~75% right, emotion good. Hebrew-script Yiddish
+is ambiguous on the page and loshn-koydesh / loanwords do not follow the letter rules, so the model guesses from
+spelling learned off noisy transcripts. Fix: feed IPA instead of letters. `data/phonemize.py` wraps the Phonikud-yi
+engine bundle (`PHONIKUD_YI_BUNDLE=/path/to/phonikud-yi-engine`, built by Phonikud-yi's `src/make_bundle.py`; the
+model export is not in the public repo). `materialize.py --text-mode ipa` converts every row's text (one engine for
+all sources, shipped IPA columns ignored for consistency; original kept in `text_orig`); `render_yiddish_podcast.py
+--phonemize` converts scripts at render time so users still type Yiddish. Retrain (~2.5 h on the H200) as `mix_v2_ipa`.
