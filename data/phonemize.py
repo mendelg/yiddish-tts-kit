@@ -86,6 +86,8 @@ class Phonemizer:
 
     def convert(self, text: str) -> str:
         """Overrides (longest phrase first) + engine for everything in between."""
+        # Hyphenated compounds (ערלי-וואטינג) are split so each part can hit the overrides table.
+        text = re.sub(r"(?<=[\u05d0-\u05ea])-(?=[\u05d0-\u05ea])", " ", text)
         toks = text.split(); out: list[str] = []; span: list[str] = []; i = 0
         def flush():
             if span: out.append(self.engine(" ".join(span))); span.clear()
