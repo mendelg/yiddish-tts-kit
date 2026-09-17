@@ -30,6 +30,13 @@ uv pip install -q --python .venv/bin/python --no-deps -e .
 .venv/bin/python -m pytest tests -q 2>&1 | tail -1
 
 if [[ ! -d $KIT/.git ]]; then git clone -q "$KIT_URL" "$KIT"; else git -C "$KIT" pull -q; fi
+
+# Phonikud-yi engine bundle (Yiddish text -> nikud -> IPA; public on the Hub, ~1.5 GB, CPU only) for --text-mode ipa.
+PHONIKUD_DIR=${PHONIKUD_DIR:-$WORK/phonikud-yi-engine}
+[[ -f $PHONIKUD_DIR/yiddish_labels.py ]] || .venv/bin/python -c "from huggingface_hub import snapshot_download; snapshot_download('notmax123/phonikud-yi-engine', local_dir='$PHONIKUD_DIR')"
+uv pip install -q --python .venv/bin/python onnxruntime python-dotenv requests
+(cd "$PHONIKUD_DIR" && "$REPO/.venv/bin/python" selftest.py 2>&1 | tail -1)
+echo "export PHONIKUD_YI_BUNDLE=$PHONIKUD_DIR" > "$WORK/.phonikud_env"
 cat <<MSG
 
 Setup done.
@@ -37,6 +44,7 @@ Setup done.
   kit:      $KIT
 Next:
   hf auth login                                   # member of Yiddish-AI for the private sources
+  source $WORK/.phonikud_env                      # PHONIKUD_YI_BUNDLE for --text-mode ipa / --phonemize
   wandb login                                     # optional: streams training curves to wandb.ai
   cd $KIT
   \$PY data/materialize.py --manifest manifest/manifest.parquet --out $WORK/vibevoice-data/mix_v1 \\

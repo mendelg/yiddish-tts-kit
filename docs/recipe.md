@@ -35,6 +35,6 @@ Hub rate limit is 3000 API calls / 5 min (the materializer paces itself). Checkp
 is ambiguous on the page and loshn-koydesh / loanwords do not follow the letter rules, so the model guesses from
 spelling learned off noisy transcripts. Fix: feed IPA instead of letters. `data/phonemize.py` wraps the Phonikud-yi
 engine bundle (`PHONIKUD_YI_BUNDLE=/path/to/phonikud-yi-engine`, built by Phonikud-yi's `src/make_bundle.py`; the
-model export is not in the public repo). `materialize.py --text-mode ipa` converts every row's text (one engine for
+model export is not in the GitHub repo but the full bundle is public on the Hub as `notmax123/phonikud-yi-engine`). `materialize.py --text-mode ipa` converts every row's text (one engine for
 all sources, shipped IPA columns ignored for consistency; original kept in `text_orig`); `render_yiddish_podcast.py
 --phonemize` converts scripts at render time so users still type Yiddish. Retrain (~2.5 h on the H200) as `mix_v2_ipa`.
