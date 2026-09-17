@@ -38,3 +38,20 @@ engine bundle (`PHONIKUD_YI_BUNDLE=/path/to/phonikud-yi-engine`, built by Phonik
 model export is not in the GitHub repo but the full bundle is public on the Hub as `notmax123/phonikud-yi-engine`). `materialize.py --text-mode ipa` converts every row's text (one engine for
 all sources, shipped IPA columns ignored for consistency; original kept in `text_orig`); `render_yiddish_podcast.py
 --phonemize` converts scripts at render time so users still type Yiddish. Retrain (~2.5 h on the H200) as `mix_v2_ipa`.
+
+### Correcting the phonemes ("Phonikud-yi, then Fable")
+
+The engine tags every word HIGH / MED / LOW confidence; LOW is its own human-review queue, not noise. On the training
+corpus (2.8M tokens) 65% is HIGH, 14% MED, 22% LOW. Two systematic misses: unpointed פ read as *f* in loanwords and
+names (policy, computer, Putin, Trump), and loshn-koydesh vowels (מורא, מצה, מוח, במילא). The fix is a reviewed table,
+`data/g2p_overrides.tsv` (word or phrase -> IPA), applied before the engine with longest phrase first, so the same
+correction reaches training labels and inference prompts.
+
+```bash
+python data/g2p_review.py scripts/*.json                                  # what the engine is unsure about in the scripts
+python data/g2p_review.py --manifest manifest/manifest.parquet --min-count 25   # frequency-sorted review queue
+# review the rows by ear, append `word<TAB>ipa` to data/g2p_overrides.tsv; loading validates the phone inventory
+```
+
+The materialize cache is keyed on the overrides file, so editing the table re-phonemizes on the next run. Digits and
+Latin words are dropped by the engine: write numbers out in Yiddish words in scripts (the render prints a warning).

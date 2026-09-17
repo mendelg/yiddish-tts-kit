@@ -1,0 +1,143 @@
+# Heimish/Hasidic pronunciation overrides applied on top of the Phonikud-yi engine (data/phonemize.py).
+# key = Hebrew-script word or multiword phrase (whitespace separated, punctuation stripped); value = IPA in the
+# engine's closed inventory (vowels a aː ɛ ə i u ɔ ej aj ɔj oʊ; ˈ right before the stressed vowel).
+# Sources: engine LOW/MED-confidence words reviewed by ear (Fable) for the scripts and the training corpus.
+# Multiword keys win over single words (longest match first). Lines starting with # are comments.
+נו	nu
+סימן	sˈimən
+למדן	lˈamdn
+תפילין	tfˈilin
+תוקע	tˈɔjkɛjə
+בעל תוקע	bal tˈɔjkɛjə
+ערב	ˈɛrəv
+שמעון	ʃˈimən
+עליכם	alˈejxəm
+שלום עליכם	ʃˈuləm alˈejxəm
+עליכם שלום	alˈejxəm ʃˈuləm
+דוד	dˈuvid
+טשולנט	ʧˈɔlənt
+ברוכים הבאים	brˈuxim habˈuim
+הבאים	habˈuim
+מורא	mˈɔjrə
+מורא'דיק	mˈɔjrədik
+מורא'דיקע	mˈɔjrədikə
+פרוטה	prˈitə
+געבלאזן	ɡəblˈuzn
+סוחר	sˈɔjxər
+סוחרים	sɔjxˈɔrim
+יריד	jarˈid
+פיטום	pˈitəm
+כיפור	kˈipər
+כפרות	kapˈɔjrəs
+גמר חתימה טובה	ɡmar xasˈimə tˈɔjvə
+גמר	ɡmar
+חתימה	xasˈimə
+טובה	tˈɔjvə
+שכן	ʃˈɔxn
+שכנים	ʃxˈejnim
+עיקר	ˈikər
+לעיקוואד	lˈejkvud
+שיפונג	ʃˈipinɡ
+# --- from reviewing the sukkah/tefillin scripts in context (the ReNikud context reader flips ɛ/ə and u/a on some words)
+אווענט	ˈuvnt
+טראגעדיע	traɡˈɛdiə
+אויפגעשטעלט	ˈɔjfɡəʃtɛlt
+לענגערע	lˈɛnɡərə
+פארקערט	farkˈɛrt
+דארף	darf
+וואנט	vant
+געזעסן	ɡəzˈɛsn
+זוכן	zixn
+# --- from the corpus review (top ~220 LOW-confidence words, 2.8M tokens). Most misses: unpointed פ read as f in
+#     loanwords/names (policy, computer, Putin), and loshn-koydesh vowels.
+פאליסי	pˈalisi
+פאליסיס	pˈalisis
+קאמפיוטער	kampjˈutər
+טראמפ	tramp
+טראמפ'ס	tramps
+פאסירט	pasˈirt
+ספעציעל	spˈɛʦiəl
+פובליק	pˈɔblik
+פוינט	pɔjnt
+פיקטשער	pˈikʧər
+פרעשור	prˈɛʃər
+אייראפע	ajrˈɔpə
+קאמפעני	kˈɔmpəni
+ספעיס	spajs
+עראפלאן	ɛraplˈan
+דעפארטמענט	dipˈartmənt
+פוטין	pˈutin
+אפשטעלן	ˈɔpʃtɛln
+פונקטליך	pˈinktləx
+פאלק	fɔlk
+צפון	ʦˈɔfn
+אופן	ˈɔjfn
+מוח	mˈɔjəx
+מלכה	mˈalkə
+פשוט	pˈɔʃət
+פשוט'ע	pˈɔʃətə
+פשוט'ער	pˈɔʃətər
+כאילו	kəˈilə
+מורא'דיג	mˈɔjrədiɡ
+מורא'דיגע	mˈɔjrədiɡə
+במילא	bəmˈejlə
+מילא	mˈejlə
+טאן	tin
+דזשאו	ʤoʊ
+קאוסט	kɔst
+בארא	bˈɔrɔ
+קאל	kɔl
+גענטפערט	ɡəˈɛntfərt
+אריינגערעכנט	arˈaːnɡərɛxnt
+# --- corpus review, LOW words 221-420 and top MED words
+ביהמ"ד	bejs hamˈɛdrəʃ
+בית המדרש	bejs hamˈɛdrəʃ
+היפאפאטימעס	hipapˈataməs
+קאמפליצירט	kampliʦˈirt
+קאמפליצירטע	kampliʦˈirtə
+אפן	ɔfn
+אפענע	ˈɔfənə
+סיבות	sˈibəs
+קאנסטיטוציע	kanstitˈuʦiə
+היות	hˈejɔjs
+פלין	plejn
+פריוואטע	prˈivatə
+פריוואט	privˈat
+פראצעס	prˈɔʦɛs
+קאמפעניס	kˈɔmpənis
+קאמפאני	kˈɔmpani
+רעוואלוציע	rɛvalˈuʦiə
+פאול	pɔl
+אפיציעל	ɔfiʦiˈɛl
+אפיציעלע	ɔfiʦiˈɛlə
+קאמפיוטערס	kampjˈutərs
+מעיאר	mˈejər
+מצליח	maʦlˈiəx
+שעיפ	ʃejp
+שמואל	ʃmˈiəl
+פראוד	proʊd
+עפיסוד	ˈɛpisɔd
+פאוער	pˈaər
+דיפארטמענט	dipˈartmənt
+מציאות	mˈɛʦiəs
+ספענדן	spɛndn
+פייפ	pajp
+אימפעריע	impˈɛriə
+קאמפעין	kampˈejn
+הנאה	hanˈuə
+מצה	mˈaʦə
+פראיעקט	prɔjˈɛkt
+אויסגעשטעלט	ˈoʊsɡəʃtɛlt
+שייכות	ʃˈajxəs
+דעי	dej
+דעיס	dejs
+עי	ej
+סטעיט	stejt
+סטעיטס	stejts
+קעיס	kejs
+דרום	dˈurəm
+מ'דארף	mdarf
+מלוה	mˈalvə
+מלוה מלכה	mˈalvə mˈalkə
+בעיקר	bəˈikər
+עיר	ir

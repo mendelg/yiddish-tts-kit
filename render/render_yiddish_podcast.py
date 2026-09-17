@@ -66,7 +66,9 @@ def main():
     if a.phonemize:
         import sys as _sys; _sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "data"))
         from phonemize import Phonemizer
-        script = Phonemizer()(script)
+        ph = Phonemizer()
+        if d := ph.dropped(script): print(f"WARNING: the engine drops digits/Latin, write them out in Yiddish words: {d}", file=sys.stderr)
+        script = ph(script)
     print(script)
     for k, path in enumerate(prompts):
         print(f"Speaker {k} voice: {path}")
