@@ -82,12 +82,21 @@ def fetch_broadcast(rows, cache: Path, workers: int):
     repo = rs[0]["source_repo"]
     recs = sorted({r["recording_id"] for r in rs})
     local = cache / "src" / repo.replace("/", "__")
-    patterns = [f"yiddish24/source_audio/{rec}.wav" for rec in recs]
-    for attempt in range(60):
-        try:
-            snapshot_download(repo, repo_type="dataset", local_dir=str(local), allow_patterns=patterns, max_workers=4); break
-        except Exception as e:
-            print(f"{repo} sources: paused by {str(e).splitlines()[0][:120]}; sleeping 300 s", flush=True); time.sleep(300)
+    from huggingface_hub import hf_hub_download
+    missing = [rec for rec in recs if not (local / f"yiddish24/source_audio/{rec}.wav").exists()]
+    print(f"broadcast24: {len(recs)} recordings needed, {len(missing)} to download", flush=True)
+    def get(rec):
+        for attempt in range(6):
+            try:
+                hf_hub_download(repo, f"yiddish24/source_audio/{rec}.wav", repo_type="dataset", local_dir=str(local)); return True
+            except Exception as e:
+                wait = 300 if "429" in str(e) else 5 * (attempt + 1)
+                print(f"{rec}: {str(e).splitlines()[0][:100]}; retry in {wait} s", flush=True); time.sleep(wait)
+        return False
+    with ThreadPoolExecutor(4) as pool:
+        got = list(pool.map(get, missing))
+    recs = [rec for rec, ok in zip(recs, [True] * (len(recs) - len(missing)) + got)] if missing else recs
+    rs = [r for r in rs if (local / f"yiddish24/source_audio/{r['recording_id']}.wav").exists()]
     def cut(r):
         dest = local_path(r, cache)
         if dest.exists() and dest.stat().st_size > 1000: return
