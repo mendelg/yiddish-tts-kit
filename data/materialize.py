@@ -34,6 +34,15 @@ def fetch_files(rows, cache: Path, workers: int):
     from huggingface_hub import hf_hub_download
     from huggingface_hub.errors import HfHubHTTPError
     todo = [r for r in rows if r["codec"] != "mp3_in_parquet" and r["source"] != "broadcast24"]
+    # Teef Teef windows carry their two voice-prompt clips in `note` ("voice prompts: a|b"); fetch those too.
+    prompt_rows = {}
+    for r in rows:
+        if r["source"] == "teef_windows" and "voice prompts: " in (r.get("note") or ""):
+            for rel in r["note"].split("voice prompts: ", 1)[1].split("|"):
+                rel = rel.strip()
+                if rel: prompt_rows.setdefault(rel, dict(id=f"prompt_{rel}", source="teef_prompt", source_repo=r["source_repo"],
+                                                           source_path=f"prompts/{rel}", codec="wav"))
+    todo += list(prompt_rows.values())
     broken = []
     def one(r):
         dest = local_path(r, cache)
@@ -193,7 +202,13 @@ def main():
             short = [r for r in part if r not in long_rows]
             for r in long_rows:
                 text = r["text"] if r["text"].lstrip().startswith("Speaker") else "\n".join(f"Speaker 0: {l}" for l in r["text"].split("\n") if l.strip())
-                vp = [prompt({r["id"]})] if int(r["num_speakers"]) == 1 else None
+                if int(r["num_speakers"]) == 1:
+                    vp = [prompt({r["id"]})]
+                else:
+                    rels = [x.strip() for x in (r.get("note") or "").split("voice prompts: ", 1)[-1].split("|") if x.strip()] if "voice prompts: " in (r.get("note") or "") else []
+                    paths = [local_path(dict(source_repo=r["source_repo"], source_path=f"prompts/{rel}", codec="wav"), a.cache) for rel in rels]
+                    vp = [str(p) for p in paths if p.exists()] or None
+                    if vp and len(vp) < int(r["num_speakers"]): vp = None
                 out_rows[split].append(dict(id=r["id"], source=r["source"], speaker=spk, text=text, audio=str(r["local"]), voice_prompts=vp, duration=round(r["dur"], 3), num_speakers=int(r["num_speakers"])))
             rng.shuffle(short); i = 0
             while i < len(short):
