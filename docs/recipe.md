@@ -39,6 +39,27 @@ model export is not in the GitHub repo but the full bundle is public on the Hub 
 all sources, shipped IPA columns ignored for consistency; original kept in `text_orig`); `render_yiddish_podcast.py
 --phonemize` converts scripts at render time so users still type Yiddish. Retrain (~2.5 h on the H200) as `mix_v2_ipa`.
 
+
+## Current best render recipe (2026-09-17)
+
+Adapter `mix_v2_ipa` checkpoint 2400 (phonetic input), Google Chirp3-HD Hebrew voices Puck (host) + Sadaltager (guest) as
+11-13 s reference clips, CFG 1.5, 10 diffusion steps, whole script in one pass, then a 10% slowdown:
+
+```bash
+python render/render_yiddish_podcast.py --script dialogue/podcast_tefillin.json \
+    --voices A=references/google/Puck_synth.wav B=references/google/Sadaltager_synth.wav \
+    --checkpoint outputs/vibevoice/ipa-final --cfg-scale 1.5 --seed 3 --phonemize --out out/tefillin.wav
+ffmpeg -i out/tefillin.wav -filter:a atempo=0.90 out/tefillin_slow90.wav        # the pace listeners preferred
+python render/eval_renders.py --script dialogue/podcast_tefillin.json out/tefillin.wav   # duration, transcript, reached end
+```
+
+- The render prints `engine unsure about ...` for words nobody has reviewed; listen for those first.
+- Pace follows the reference clips, so slow down in post (atempo 0.85-0.92) rather than by changing the model.
+- If a render comes out short or the transcript shows a missing turn, re-seed first (3, 7, 42); if that fails on a long
+  script (> 8 turns), add `--chunk-turns 4`. Chunking joins independent passes, so the voice resets slightly at joins;
+  listeners preferred the single-pass render when it was complete.
+- Whisper is evidence only: it drops words at its own window cuts (fixed to cut at quiet points) and mishears names.
+
 ### Correcting the phonemes ("Phonikud-yi, then Fable")
 
 The engine tags every word HIGH / MED / LOW confidence; LOW is its own human-review queue, not noise. On the training
