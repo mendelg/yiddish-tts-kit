@@ -29,24 +29,39 @@ def to_wav24k(src: Path, dest: Path):
 
 
 def fetch_files(rows, cache: Path, workers: int):
-    """Download file-backed clips (grouped per repo, resumable) and convert them."""
-    from huggingface_hub import snapshot_download
-    by_repo = defaultdict(set)
-    for r in rows:
-        if r["codec"] != "mp3_in_parquet" and r["source"] != "broadcast24":
-            by_repo[r["source_repo"]].add(r["source_path"])
-    for repo, paths in by_repo.items():
-        local = cache / "src" / repo.replace("/", "__")
-        for attempt in range(60):
+    """Download file-backed clips one by one (skipping what is already cached), convert to 24 kHz.
+    A file that still fails after 3 tries is dropped from `rows` and reported; a rate-limit refusal pauses 5 min."""
+    from huggingface_hub import hf_hub_download
+    from huggingface_hub.errors import HfHubHTTPError
+    todo = [r for r in rows if r["codec"] != "mp3_in_parquet" and r["source"] != "broadcast24"]
+    broken = []
+    def one(r):
+        dest = local_path(r, cache)
+        if dest.exists() and dest.stat().st_size > 1000:
+            return True
+        local = cache / "src" / r["source_repo"].replace("/", "__")
+        for attempt in range(3):
             try:
-                snapshot_download(repo, repo_type="dataset", local_dir=str(local), allow_patterns=sorted(paths), max_workers=8)
-                break
-            except Exception as e:
-                print(f"{repo}: paused by {str(e).splitlines()[0][:120]}; sleeping 300 s", flush=True); time.sleep(300)
-        jobs = [(local / p, cache / "wav24k" / repo.replace("/", "__") / (Path(p).with_suffix(".wav"))) for p in paths]
-        with ThreadPoolExecutor(workers) as pool:
-            list(pool.map(lambda j: to_wav24k(*j), jobs))
-        print(f"{repo}: {len(paths)} clips ready", flush=True)
+                p = hf_hub_download(r["source_repo"], r["source_path"], repo_type="dataset", local_dir=str(local))
+                to_wav24k(Path(p), dest); return True
+            except HfHubHTTPError as e:
+                if getattr(e.response, "status_code", None) == 429:
+                    print("rate limit; sleeping 300 s", flush=True); time.sleep(300); continue
+                if getattr(e.response, "status_code", None) == 404:
+                    break
+                time.sleep(2 + 3 * attempt)
+            except Exception:
+                time.sleep(2 + 3 * attempt)
+        return False
+    with ThreadPoolExecutor(workers) as pool:
+        for k, (r, ok) in enumerate(zip(todo, pool.map(one, todo)), 1):
+            if not ok: broken.append(r)
+            if k % 1000 == 0: print(f"files: {k}/{len(todo)} done", flush=True)
+    if broken:
+        print(f"skipped {len(broken)} files that would not download, e.g. {[b['source_path'] for b in broken[:3]]}", flush=True)
+        ids = {b["id"] for b in broken}
+        rows[:] = [r for r in rows if r["id"] not in ids]
+    print(f"file-backed clips ready: {len(todo) - len(broken)}", flush=True)
 
 
 def fetch_broadcast(rows, cache: Path, workers: int):
@@ -160,6 +175,8 @@ def main():
     if a.dry_run: return
     a.cache.mkdir(parents=True, exist_ok=True)
     fetch_files(rows, a.cache, a.workers); fetch_broadcast(rows, a.cache, a.workers); fetch_parquet(rows, a.cache)
+    by_spk = defaultdict(list)
+    for r in rows: by_spk[r["speaker"]].append(r)
     for r in rows:
         r["local"] = local_path(r, a.cache); r["dur"] = seconds(r["local"])
 
