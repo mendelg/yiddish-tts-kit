@@ -114,7 +114,7 @@ def main():
     ap.add_argument("--cache", type=Path, default=Path("/workspace/mix-cache"))
     ap.add_argument("--out", type=Path, default=Path("/workspace/vibevoice-data/mix_v1"))
     ap.add_argument("--sources", default="teef_windows,studio,hasidic24,crowd_recital,crowd_whatsapp,broadcast24")
-    ap.add_argument("--min-quality", type=float, default=0.0, help="Drop rows below this quality_score")
+    ap.add_argument("--min-quality", type=float, default=0.9, help="Drop crowd_recital/crowd_whatsapp rows below this alignment quality_score")
     ap.add_argument("--chain-below", type=float, default=15.0, help="Chain single-speaker rows shorter than this")
     ap.add_argument("--chain-min", type=float, default=20.0); ap.add_argument("--chain-max", type=float, default=40.0)
     ap.add_argument("--repeat", default="teef_windows=2", help="source=n repeats in the training split")
@@ -129,8 +129,10 @@ def main():
         raw = [{k: ("" if v is None else str(v)) for k, v in r.items()} for r in pq.read_table(a.manifest).to_pylist()]
     else:
         raw = list(csv.DictReader(a.manifest.open(encoding="utf-8")))
+    QUALITY_FILTERED = {"crowd_recital", "crowd_whatsapp"}   # alignment scores; other sources' scores mean different things
     rows = [r for r in raw
-            if r["source"] in want and r["tts_ok"] == "True" and float(r["quality_score"] or 1.0) >= a.min_quality and r["split"] != "test"]
+            if r["source"] in want and r["tts_ok"] == "True" and r["split"] != "test"
+            and (r["source"] not in QUALITY_FILTERED or float(r["quality_score"] or 1.0) >= a.min_quality)]
     by_spk = defaultdict(list)
     for r in rows: by_spk[r["speaker"]].append(r)
     for spk, rs in by_spk.items():
