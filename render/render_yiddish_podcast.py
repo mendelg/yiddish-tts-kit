@@ -45,6 +45,8 @@ def main():
     p.add_argument("--device", default="cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu"))
     p.add_argument("--no-voice-prompts", action="store_true", help="Let the model invent the voices (is_prefill=False)")
     p.add_argument("--dry-run", action="store_true", help="Print the normalized script and voices, load nothing")
+    p.add_argument("--chunk-turns", type=int, default=0, help="Render the script in chunks of N turns (same voices) and join them with a short pause; avoids skipped turns and the ~60 s ceiling on long scripts. 0 = whole script at once")
+    p.add_argument("--chunk-pause", type=float, default=0.35, help="Seconds of silence between chunks")
     p.add_argument("--phonemize", action="store_true", help="Convert the script to IPA with Phonikud-yi first (for adapters trained with --text-mode ipa)")
     a = p.parse_args()
 
@@ -96,19 +98,27 @@ def main():
     model.eval()
     model.set_ddpm_inference_steps(num_steps=a.steps)
 
-    inputs = processor(text=[script], voice_samples=[prompts], padding=True, return_tensors="pt", return_attention_mask=True)
-    inputs = {k: (v.to(a.device) if torch.is_tensor(v) else v) for k, v in inputs.items()}
-    t0 = time.time()
-    outputs = model.generate(**inputs, max_new_tokens=None, cfg_scale=a.cfg_scale, tokenizer=processor.tokenizer,
-                             generation_config={"do_sample": False}, verbose=True, is_prefill=not a.no_voice_prompts)
-    wav = outputs.speech_outputs[0]
+    lines = script.split("\n")
+    chunks = [lines[i:i + a.chunk_turns] for i in range(0, len(lines), a.chunk_turns)] if a.chunk_turns > 0 else [lines]
+    t0 = time.time(); pieces = []
+    for k, chunk in enumerate(chunks):
+        if len(chunks) > 1: print(f"chunk {k + 1}/{len(chunks)}: {len(chunk)} turns", flush=True)
+        torch.manual_seed(a.seed + k)
+        inputs = processor(text=["\n".join(chunk)], voice_samples=[prompts], padding=True, return_tensors="pt", return_attention_mask=True)
+        inputs = {kk: (v.to(a.device) if torch.is_tensor(v) else v) for kk, v in inputs.items()}
+        outputs = model.generate(**inputs, max_new_tokens=None, cfg_scale=a.cfg_scale, tokenizer=processor.tokenizer,
+                                 generation_config={"do_sample": False}, verbose=True, is_prefill=not a.no_voice_prompts)
+        piece = outputs.speech_outputs[0].detach().float().cpu().reshape(-1)
+        if pieces: pieces.append(torch.zeros(int(a.chunk_pause * 24000)))
+        pieces.append(piece)
+    wav = torch.cat(pieces)
     a.out.parent.mkdir(parents=True, exist_ok=True)
     processor.save_audio(wav, output_path=str(a.out))
     seconds = wav.shape[-1] / 24000
     print(f"Wrote {a.out} ({seconds:.1f} s of audio in {time.time() - t0:.1f} s)")
     (a.out.with_suffix(".json")).write_text(json.dumps(dict(
         script=script, voices=prompts, model=a.model, checkpoint=a.checkpoint, cfg_scale=a.cfg_scale,
-        steps=a.steps, seed=a.seed, seconds=seconds), ensure_ascii=False, indent=2))
+        steps=a.steps, seed=a.seed, seconds=seconds, chunk_turns=a.chunk_turns), ensure_ascii=False, indent=2))
 
 
 if __name__ == "__main__":
