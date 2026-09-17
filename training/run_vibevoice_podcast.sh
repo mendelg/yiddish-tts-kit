@@ -77,7 +77,7 @@ echo "MODEL $MODEL on GPU ${GPU_GB} GB -> batch $BS x accumulation $ACC, gradien
 # WANDB_PROJECT names the project (default yiddish-vibevoice); the run is named after $RUN. Otherwise TensorBoard only.
 if [[ -n ${WANDB_API_KEY:-} ]] || [[ -s ${HOME}/.netrc && $(grep -c api.wandb.ai "${HOME}/.netrc") -gt 0 ]]; then
   export WANDB_PROJECT=${WANDB_PROJECT:-yiddish-vibevoice} WANDB_NAME=${WANDB_NAME:-$RUN} WANDB_DIR=${WANDB_DIR:-$WORK/wandb}
-  REPORT_TO="tensorboard wandb"; echo "wandb: project $WANDB_PROJECT, run $WANDB_NAME"
+  REPORT_TO=all; echo "wandb: project $WANDB_PROJECT, run $WANDB_NAME"
 else
   REPORT_TO=tensorboard; echo "wandb: not configured (set WANDB_API_KEY to enable)"
 fi
