@@ -12,6 +12,7 @@ passed in that order, matching how the fine-tune rows were built.
 import argparse
 import json
 import os
+import sys
 import time
 from pathlib import Path
 
@@ -68,6 +69,17 @@ def main():
         from phonemize import Phonemizer
         ph = Phonemizer()
         if d := ph.dropped(script): print(f"WARNING: the engine drops digits/Latin, write them out in Yiddish words: {d}", file=sys.stderr)
+        # Review checklist: words the engine is unsure about and that have no override yet. Listen for these first;
+        # a wrong one becomes a line in data/g2p_overrides.tsv (see docs/recipe.md, "Correcting the phonemes").
+        from phonemize import split_punct, HEBREW
+        seen = {}
+        for sent in ph.sentences(script):
+            for tok in sent.split():
+                w = split_punct(tok)[1]
+                if w and HEBREW.search(w) and w not in seen and w not in ph.overrides:
+                    d = ph.token_detail(w)
+                    if d.get("confidence") in ("LOW", "MED"): seen[w] = f"{w} -> {d.get('ipa_primary')} [{d.get('confidence')}]"
+        if seen: print("engine unsure about (check by ear): " + "; ".join(seen.values()), file=sys.stderr)
         script = ph(script)
     print(script)
     for k, path in enumerate(prompts):
