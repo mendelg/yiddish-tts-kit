@@ -141,6 +141,29 @@ def seconds(p: Path) -> float:
     i = sf.info(str(p)); return i.frames / i.samplerate
 
 
+_PH = None
+
+
+def _ph_worker_init():
+    """One engine per process; cap ONNX threads so 40+ workers do not oversubscribe the cores."""
+    global _PH
+    import onnxruntime as ort
+    _orig = ort.InferenceSession
+
+    class _Capped(_orig):
+        def __init__(self, path_or_bytes, sess_options=None, **kw):
+            so = sess_options or ort.SessionOptions(); so.intra_op_num_threads = 2; so.inter_op_num_threads = 1
+            super().__init__(path_or_bytes, sess_options=so, **kw)
+    ort.InferenceSession = _Capped
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from phonemize import Phonemizer
+    _PH = Phonemizer()
+
+
+def _ph_worker(sent: str) -> tuple[str, str]:
+    return sent, _PH.sentence(sent)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--manifest", type=Path, default=Path("manifest/manifest.parquet"), help=".parquet or .csv")
@@ -154,6 +177,7 @@ def main():
     ap.add_argument("--cap-per-speaker", type=int, default=3000, help="Max rows per speaker")
     ap.add_argument("--cap-hours-per-speaker", type=float, default=15.0, help="Max audio hours per speaker (uses manifest durations)")
     ap.add_argument("--workers", type=int, default=16); ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--phonemize-workers", type=int, default=1, help="Parallel engine processes for --text-mode ipa (the engine does ~450 chars/s per process)")
     ap.add_argument("--text-mode", choices=["text", "ipa"], default="text", help="ipa: phonemize all row text with Phonikud-yi (PHONIKUD_YI_BUNDLE); original kept in text_orig")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args(); rng = random.Random(a.seed)
@@ -242,11 +266,22 @@ def main():
         sys.path.insert(0, str(Path(__file__).resolve().parent))
         from phonemize import Phonemizer
         ph = Phonemizer(cache_path=a.cache / "phonemize_cache.json")
+        all_rows = [r for split_rows in out_rows.values() for r in split_rows]
+        if a.phonemize_workers > 1:
+            # Every distinct sentence goes through a process pool once; the main Phonemizer then serves everything from cache.
+            sents = sorted({" ".join(sent.split()) for r in all_rows for sent in ph.sentences(r["text"])} - set(ph.cache))
+            print(f"phonemizing {len(sents)} distinct sentences with {a.phonemize_workers} workers", flush=True)
+            import multiprocessing as mp
+            t0 = time.time()
+            with mp.get_context("spawn").Pool(a.phonemize_workers, initializer=_ph_worker_init) as pool:
+                for k, (sent, ipa) in enumerate(pool.imap_unordered(_ph_worker, sents, chunksize=16), 1):
+                    ph.cache[sent] = ipa
+                    if k % 5000 == 0: print(f"  {k}/{len(sents)} sentences, {time.time()-t0:.0f}s", flush=True); ph.save()
+            ph.save()
         n = 0
-        for split_rows in out_rows.values():
-            for r in split_rows:
-                r["text_orig"] = r["text"]; r["text"] = ph(r["text"]); n += 1
-                if n % 2000 == 0: print(f"phonemized {n} rows", flush=True)
+        for r in all_rows:
+            r["text_orig"] = r["text"]; r["text"] = ph(r["text"]); n += 1
+            if n % 5000 == 0: print(f"phonemized {n} rows", flush=True)
         ph.save(); print(f"phonemized {n} rows (IPA)", flush=True)
     train = []
     for r in out_rows["train"]:

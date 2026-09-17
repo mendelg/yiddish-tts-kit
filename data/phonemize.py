@@ -116,6 +116,14 @@ class Phonemizer:
             if self.cache_path and self._dirty >= 500: self.save()
         return ipa
 
+    @staticmethod
+    def sentences(text: str) -> list[str]:
+        """The spoken parts of a script (speaker prefixes removed), one per line."""
+        out = []
+        for line in text.split("\n"):
+            m = SPEAKER.match(line); out.append(m.group(2) if m else line)
+        return out
+
     def __call__(self, text: str) -> str:
         """Phonemize a script: every line keeps its `Speaker N:` prefix, the rest becomes IPA."""
         out = []
