@@ -6,7 +6,7 @@
 נו	nu
 סימן	sˈimən
 למדן	lˈamdn
-תפילין	tfˈilin
+תפילין	tfˈilən
 תוקע	tˈɔjkɛjə
 בעל תוקע	bal tˈɔjkɛjə
 ערב	ˈɛrəv
@@ -143,3 +143,14 @@
 עיר	ir
 # --- from Whisper on the first IPA renders: כ with dagesh in סוכה is k, the engine read it as x
 סוכה	sˈikə
+# --- news line test (loanwords with unpointed א read as a instead of ɔ)
+ארדער	ˈɔrdər
+בלאקירט	blɔkˈirt
+בלאקירן	blɔkˈirn
+בויקאטירן	bɔjkɔtˈirn
+בויקאט	bˈɔjkɔt
+אויסלענדישע	ˈɔjslɛndiʃə
+אויסלענדיש	ˈɔjslɛndiʃ
+רעגירונגן	rəɡˈirinɡn
+רעגירונגען	rəɡˈirinɡən
+מדינת	mədˈinas
