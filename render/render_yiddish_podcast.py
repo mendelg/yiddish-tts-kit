@@ -44,6 +44,7 @@ def main():
     p.add_argument("--device", default="cuda" if torch.cuda.is_available() else ("mps" if torch.backends.mps.is_available() else "cpu"))
     p.add_argument("--no-voice-prompts", action="store_true", help="Let the model invent the voices (is_prefill=False)")
     p.add_argument("--dry-run", action="store_true", help="Print the normalized script and voices, load nothing")
+    p.add_argument("--phonemize", action="store_true", help="Convert the script to IPA with Phonikud-yi first (for adapters trained with --text-mode ipa)")
     a = p.parse_args()
 
     from vibevoice.finetune.speakers import normalize_script
@@ -62,6 +63,10 @@ def main():
         raise SystemExit(f"No voice given for speaker(s) {missing}; pass --voices name=path.wav")
     raw = "\n".join(f"Speaker {names.index(s) + 1}: {x}" for s, x in turns)
     script, prompts, _ = normalize_script(raw, [voices[n] for n in names])
+    if a.phonemize:
+        import sys as _sys; _sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "data"))
+        from phonemize import Phonemizer
+        script = Phonemizer()(script)
     print(script)
     for k, path in enumerate(prompts):
         print(f"Speaker {k} voice: {path}")

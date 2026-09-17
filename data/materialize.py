@@ -10,7 +10,7 @@ are kept as they are. Voice prompts are 3-12 s clips of the same speaker (by `sp
 Downloads are cached; rerunning only converts what is missing. Files are fetched with the Hub's xet path
 (keep HF_HUB_ENABLE_HF_TRANSFER unset) and paced by rate limits automatically.
 """
-import argparse, csv, io, json, random, subprocess, time
+import argparse, csv, io, json, random, subprocess, sys, time
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -154,6 +154,7 @@ def main():
     ap.add_argument("--cap-per-speaker", type=int, default=3000, help="Max rows per speaker")
     ap.add_argument("--cap-hours-per-speaker", type=float, default=15.0, help="Max audio hours per speaker (uses manifest durations)")
     ap.add_argument("--workers", type=int, default=16); ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--text-mode", choices=["text", "ipa"], default="text", help="ipa: phonemize all row text with Phonikud-yi (PHONIKUD_YI_BUNDLE); original kept in text_orig")
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args(); rng = random.Random(a.seed)
     want = set(a.sources.split(","))
@@ -237,6 +238,16 @@ def main():
                 out_rows[split].append(dict(id=cid, source=group[0]["source"] + "_chain", speaker=spk,
                                             text="\n".join(f"Speaker 0: {g['text'].replace(chr(10), ' ')}" for g in group), audio=str(dest),
                                             voice_prompts=[prompt({g["id"] for g in group})], duration=round(sum(g["dur"] for g in group) + sum(pauses), 3), num_speakers=1))
+    if a.text_mode == "ipa":
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from phonemize import Phonemizer
+        ph = Phonemizer(cache_path=a.cache / "phonemize_cache.json")
+        n = 0
+        for split_rows in out_rows.values():
+            for r in split_rows:
+                r["text_orig"] = r["text"]; r["text"] = ph(r["text"]); n += 1
+                if n % 2000 == 0: print(f"phonemized {n} rows", flush=True)
+        ph.save(); print(f"phonemized {n} rows (IPA)", flush=True)
     train = []
     for r in out_rows["train"]:
         n = int(repeats.get(r["source"], 1)); train.append(r)
