@@ -21,5 +21,12 @@ best. Voice prompt dropout 0.1. More training speakers = less voice drift on uns
 **Inference.** CFG 1.5 default; 2.5-3.0 forces adherence at the cost of flat delivery. 10 diffusion steps is fine.
 Loshn-koydesh words (אתרוג) may be mispronounced: spell phonetically in scripts if needed.
 
+**Non-finite gradients (the 150 h mix, Sept 17).** Three runs died at step 101: finite losses, then one optimizer
+step turned every weight to nan. Cause: a hot, clipped broadcast chain (peak 1.0, rms 0.165, ~10 dB louder than
+studio speech) overflowed the bf16 audio encoder's backward pass. Fixes in the fork: targets are now loudness-
+normalized like prompts (`--normalize_target_audio`, default on); `training_step` zeroes non-finite gradients and logs
+the row ids; the upstream EMA-of-head callback is off by default (its swap-back hooks never fire). Diagnose with
+`data/inspect_rows.py` and `data/probe_rows.py`.
+
 **Ops.** Pod: HF_HUB_ENABLE_HF_TRANSFER blocks the xet bulk path, disable it for many-small-file downloads;
 Hub rate limit is 3000 API calls / 5 min (the materializer paces itself). Checkpoints: `--save_only_model`.
