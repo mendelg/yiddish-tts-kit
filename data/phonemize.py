@@ -110,7 +110,7 @@ class Phonemizer:
         """Words the engine marks MED/LOW that nobody has reviewed yet (not overridden, not in g2p_verified.txt)."""
         seen: dict[str, str] = {}
         for sent in self.sentences(text):
-            for tok in sent.split():
+            for tok in re.sub(r"(?<=[\u05d0-\u05ea])-(?=[\u05d0-\u05ea])", " ", sent).split():
                 w = split_punct(tok)[1]
                 if w and HEBREW.search(w) and w not in seen and w not in self.overrides and w not in self.verified:
                     d = self.token_detail(w)
