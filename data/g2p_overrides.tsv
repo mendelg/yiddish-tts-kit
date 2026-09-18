@@ -85,7 +85,7 @@
 טאן	tin
 דזשאו	ʤoʊ
 קאוסט	kɔst
-בארא	bˈɔrɔ
+בארא	bˈɔrə
 קאל	kɔl
 גענטפערט	ɡəˈɛntfərt
 אריינגערעכנט	arˈaːnɡərɛxnt
@@ -274,8 +274,6 @@
 קראך	krax
 סצענע	sʦˈɛnə
 # --- Chezky's review of chasene/shnei/bungalow (2026-09-17), mapped onto the engine inventory (ɪ->i, ʊ->u, eɪ->ej, uː->u)
-מעשה	mˈajsə
-מעשיות	mˈajsəs
 בדחן	bˈadxən
 ארויסגענומען	arˈɔjsɡənimən
 ארויסגעגעבן	arˈɔjsɡəɡɛbn
@@ -284,14 +282,10 @@
 געשען	ɡəʃˈejn
 מחותנים	məxutˈunim
 מחותן	məxˈutn
-אינדערהיים	indərˈhaːm
+אינדערהיים	indərhˈajm
 געפארן	ɡəfˈurn
 שכן	ʃˈuxn
 שכן'ס	ʃˈuxns
-חסידישער	xasˈidiʃər
-חסידישע	xasˈidiʃə
-חסידיש	xasˈidiʃ
-חסידות	xasˈidəs
 מאנטיסעלא	mɔntisˈɛloʊ
 צווייטן	ʦvaːtn
 צווייטער	ʦvˈaːtər
@@ -316,3 +310,8 @@
 פריי	fraː
 ווייסן	vaːsn
 וויליאמסבורג	ˈviljamzburɡ
+# --- reviewer rulings on the v2/v3 files (gold-consistent): hall vs. 'zol', ze, Boro
+דער זאל	dɛr zal
+צו דער זאל	ʦi dɛr zal
+אין זאל	in zal
+זע	zɛ
