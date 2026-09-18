@@ -60,6 +60,15 @@ python render/eval_renders.py --script dialogue/podcast_tefillin.json out/tefill
   listeners preferred the single-pass render when it was complete.
 - Whisper is evidence only: it drops words at its own window cuts (fixed to cut at quiet points) and mishears names.
 
+
+### 7B on phonetic input (2026-09-18)
+
+`MODEL=vibevoice/VibeVoice-7B EPOCHS=2 SAVE_STEPS=200 BATCH=16 ACCUM=1` on the same 20,728 IPA rows: 4.1 h on an H200
+(117 GB used, gradient checkpointing on), eval loss 0.813 -> 0.785 where the 1.5B bottomed at 0.824. With letters as
+input the 7B had never beaten the 1.5B; with phonemes it does. Render with `--model vibevoice/VibeVoice-7B` and the 7B
+adapter (1.6 GB); about twice the render time of the 1.5B. `--next-round` (gold-contradicting rulings) was NOT used for
+this run, so the same override table serves training and rendering.
+
 ### Correcting the phonemes ("Phonikud-yi, then Fable")
 
 The engine tags every word HIGH / MED / LOW confidence; LOW is its own human-review queue, not noise. On the training
