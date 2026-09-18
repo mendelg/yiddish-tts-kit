@@ -74,5 +74,8 @@ python data/g2p_review.py --manifest manifest/manifest.parquet --min-count 25   
 # review the rows by ear, append `word<TAB>ipa` to data/g2p_overrides.tsv; loading validates the phone inventory
 ```
 
-The materialize cache is keyed on the overrides file, so editing the table re-phonemizes on the next run. Digits and
+Two tables: `data/g2p_overrides.tsv` (now: unsure words only; never a gold-lexicon word, because the current model was
+trained on gold labels) and `data/g2p_overrides_next.tsv` (readings that contradict gold, e.g. komets-vs-pasekh rulings from
+`data/review_komets_pasekh.tsv`). The second is applied only with `materialize --next-round` / `render --next-round`, so
+training labels and renders change together. The materialize cache is keyed on the overrides file, so editing the table re-phonemizes on the next run. Digits and
 Latin words are dropped by the engine: write numbers out in Yiddish words in scripts (the render prints a warning).

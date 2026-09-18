@@ -1,0 +1,403 @@
+# The 400 most frequent words with an unpointed alef (komets vs pasekh: u/ɔ vs a). Engine reading + layer (G=gold).
+# Fill 'ruling' with the correct IPA (or 'ok'). Rows with layer G are native-verified: changing them = next-round table.
+word	count	engine_ipa	route	layer	conf	reason	current_override	ruling
+און	84094	in	lexicon	G	HIGH		
+איז	63833	iz	lexicon	G	HIGH		
+האט	46933	hut	lexicon	G	HIGH		
+וואס	46600	vus	lexicon	G	HIGH		
+אין	45964	in	lexicon	G	HIGH		
+איך	25702	ix	lexicon	G	HIGH		
+האבן	23252	hubn	lexicon	G	HIGH		
+דאס	20440	dus	lexicon	G	HIGH		
+אויף	19463	oʊf	lexicon	G	HIGH		
+פאר	19128	far	lexicon	G	HIGH		
+אבער	13611	ˈɔbər	lexicon	G	HIGH		
+אזוי	12213	azˈɔj	lexicon	G	HIGH		
+ס'איז	11675	siz	lexicon	G	HIGH		
+נאך	10184	nux	lexicon	G	HIGH		
+נאר	8231	nɔr	lexicon	G	HIGH		
+אויב	8180	ɔjb	lexicon	G	HIGH		
+אדער	7926	ˈɔdər	lexicon	G	HIGH		
+אויך	7480	ɔjx	lexicon	G	HIGH		
+אלע	7457	ˈalə	lexicon	G	HIGH		
+אונז	7397	inz	lexicon	G	HIGH		
+האב	7006	hub	lexicon	G	HIGH		
+אים	6877	ejm	lexicon	G	HIGH		
+זאל	6544	zul	lexicon	G	HIGH		
+געווארן	5909	ɡəvˈɔrn	lexicon	G	HIGH		
+אנדערע	5868	ˈandərə	lexicon	G	HIGH		
+איין	5661	ajn	lexicon	G	HIGH		
+זאך	5443	zax	lexicon	G	HIGH		
+אסאך	5375	ˈasax	lexicon	G	HIGH		
+מאכן	4873	maxn	lexicon	G	HIGH		
+טראמפ	4858	trɔmp	lexicon	E	HIGH		tramp
+זאגן	4770	zuɡn	lexicon	G	HIGH		
+געזאגט	4759	ɡəzˈuɡt	lexicon	G	HIGH		
+זאכן	4488	zaxn	lexicon	G	HIGH		
+איר	4360	ir	lexicon	G	HIGH		
+וויאזוי	4270	vizˈɔj	lexicon	G	HIGH		
+גאנצע	4267	ɡˈanʦə	lexicon	G	HIGH		
+טאקע	4262	tˈakə	lexicon	G	HIGH		
+יאר	4157	jur	lexicon	G	HIGH		
+אריין	3898	arˈaːn	lexicon	G	HIGH		
+אפילו	3790	afˈilə	lexicon	L	HIGH		
+דארף	3674	daf	lexicon	G	HIGH		
+אמעריקע	3667	amˈɛrikə	lexicon	E	HIGH		
+זאגט	3558	zuɡt	lexicon	G	HIGH		
+אויס	3411	oʊs	lexicon	G	HIGH		
+געהאט	3336	ɡəhˈat	lexicon	G	HIGH		
+דעמאקראטן	3106	dəmɔkrˈatn	lexicon	G	HIGH		
+וואלט	3060	vɔlt	lexicon	G	HIGH		
+מאל	3059	mul	lexicon	G	HIGH		
+פארוואס	3043	farvˈus	lexicon	G	HIGH		
+איבער	2952	ˈibər	lexicon	G	HIGH		
+אזא	2861	azˈa	lexicon	G	HIGH		
+איינער	2826	ˈajnər	lexicon	G	HIGH		
+אלס	2799	ˈalis	lexicon	G	HIGH		
+ארום	2713	arˈim	lexicon	G	HIGH		
+דארט	2707	dɔrt	lexicon	G	HIGH		
+זאלן	2639	zɔln	lexicon	G	HIGH		
+פארן	2491	farn	lexicon	G	HIGH		
+טאג	2477	tuɡ	lexicon	G	HIGH		
+אלעס	2456	ˈaləs	lexicon	G	HIGH		
+ארויס	2444	arˈoʊs	lexicon	G	HIGH		
+געמאכט	2360	ɡəmˈaxt	lexicon	G	HIGH		
+לאנד	2343	land	rule	G	LOW	alef-default	
+מאכט	2322	maxt	lexicon	G	HIGH		
+לאמיר	2297	lˈɔmir	lexicon	G	HIGH		
+וואו	2163	vi	lexicon	G	HIGH		
+האסט	2118	hust	lexicon	G	HIGH		
+געוואלט	2108	ɡəvˈɔlt	lexicon	G	HIGH		
+אביסל	2068	abˈisl	lexicon	G	HIGH		
+דאך	2059	dɔx	lexicon	G	HIGH		
+אויפן	2035	afn	lexicon	G	HIGH		
+אמעריקאנער	2017	amərˈikanər	lexicon	E	HIGH		
+נאכדעם	2005	nuxdˈejm	lexicon	G	HIGH		
+ישראל	2002	jisrˈuəl	lexicon	L	HIGH		
+ארבעט	1936	ˈarbət	lexicon	G	HIGH		
+אידן	1921	jidn	lexicon	G	HIGH		
+דארפן	1920	daːfn	lexicon	G	HIGH		
+אפשר	1891	ˈɛfʃir	lexicon	L	HIGH		
+סאו	1879	sɔ	lexicon	G	HIGH		
+דארטן	1824	dɔrtn	lexicon	G	HIGH		
+גארנישט	1823	ɡˈurniʃt	lexicon	G	HIGH		
+אונטער	1817	ˈintər	lexicon	G	HIGH		
+באקומען	1786	bakˈimən	lexicon	G	HIGH		
+פלאץ	1682	plaːʦ	lexicon	G	HIGH		
+וואסער	1673	vˈasər	lexicon	G	HIGH		
+מ'האט	1664	mhut	rule	G	MED	clitic	
+רעפובליקאנער	1662	rəpiblikˈanər	lexicon	G	HIGH		
+שטארק	1583	ʃtark	lexicon	G	HIGH		
+פארשטייט	1575	farʃtˈajt	lexicon	G	HIGH		
+אקעי	1537	ˈɔkaj	lexicon	G	HIGH		
+שטאט	1490	ʃtut	lexicon	G	MED	audio-vowel	
+אמאל	1486	amˈul	lexicon	G	HIGH		
+האלטן	1485	haltn	lexicon	G	HIGH		
+יארן	1436	jurn	lexicon	G	HIGH		
+איינע	1430	ˈajnə	lexicon	G	HIGH		
+אונזער	1424	ˈinzər	lexicon	G	HIGH		
+גאר	1398	ɡur	lexicon	G	HIGH		
+אלץ	1390	alʦ	lexicon	G	HIGH		
+אראפ	1364	arˈup	lexicon	G	HIGH		
+ארויף	1344	arˈoʊf	lexicon	G	HIGH		
+וואך	1308	vɔx	lexicon	G	HIGH		
+אנגעהויבן	1306	ˈunɡəhɔjbn	lexicon	G	HIGH		
+ארבעטן	1303	ˈarbətn	lexicon	G	HIGH		
+פראבלעם	1302	prɔblˈejm	lexicon	E	HIGH		
+סארט	1289	sɔrt	lexicon	G	HIGH		
+ס'האט	1274	səhˈut	lexicon	G	HIGH		
+ווארט	1251	vɔrt	lexicon	G	HIGH		
+נאמען	1248	nˈumən	lexicon	G	HIGH		
+איד	1239	jid	lexicon	G	HIGH		
+דאן	1198	dan	lexicon	G	HIGH		
+אליין	1172	alˈajn	lexicon	G	HIGH		
+האלט	1167	halt	lexicon	G	HIGH		
+פארט	1154	fɔrt	lexicon	G	HIGH		
+קיינמאל	1147	kˈajnmul	lexicon	G	HIGH		
+קאנגרעס	1129	kɔnɡrˈɛs	lexicon	G	HIGH		
+איינס	1127	ajns	lexicon	G	HIGH		
+גאנץ	1104	ɡanʦ	lexicon	G	HIGH		
+אויפ'ן	1081	afn	rule	G	LOW	alef-default,pe-default	
+פארטיי	1067	pˈartaj	lexicon	G	HIGH		
+לאנג	1061	laːnɡ	lexicon	G	HIGH		
+קלאר	1060	klur	lexicon	G	HIGH		
+אנדערש	1056	ˈandiʃ	lexicon	G	HIGH		
+יארק	1039	jɔrk	lexicon	E	HIGH		
+קאר	1032	kar	lexicon	E	HIGH		
+סאך	1031	sax	rule	G	LOW	alef-default	
+איי	1030	aj	rule	G	LOW	alef-default	
+אויכעט	1028	ˈɔjxət	rule	G	LOW	alef-default	
+אפאר	1022	apˈur	lexicon	G	HIGH		
+פארשטיין	993	farʃtˈajn	lexicon	G	HIGH		
+אינעם	950	ˈinəm	lexicon	G	HIGH		
+איראן	939	irˈan	lexicon	E	HIGH		
+צוזאמען	935	ʦizˈamən	lexicon	G	HIGH		
+געדארפט	933	ɡədˈarft	lexicon	G	HIGH		
+רוסלאנד	929	rˈusland	lexicon	E	HIGH		
+אוועק	918	avˈɛk	lexicon	G	HIGH		
+געגאנגען	915	ɡəɡˈanɡən	lexicon	G	HIGH		
+שטאטן	915	ʃtatn	rule	G	LOW	alef-default	
+דעמאקראטישע	909	dˈɛmakratiʃə	rule	G	LOW	alef-default	
+אייגענע	897	ˈajɡənə	lexicon	G	HIGH		
+געוואוסט	892	ɡəvˈist	rule	G	LOW	alef-default	
+פאליציי	880	pˈɔliʦaj	lexicon	G	HIGH		
+פאליטישע	877	pɔlˈitiʃə	lexicon	G	HIGH		
+אזעלכע	864	azˈɛlxə	rule	G	LOW	alef-default	
+אויל	861	ɔjl	rule	G	LOW	alef-default	
+אליינס	851	alˈajns	lexicon	G	HIGH		
+עקאנאמיע	844	ˈɛkanamiə	rule	G	LOW	alef-default	
+איינמאל	837	ˈajnmul	lexicon	G	HIGH		
+מיליאן	833	miljˈɔn	lexicon	G	HIGH		
+אינגאנצן	830	inɡˈanʦn	lexicon	G	HIGH		
+געהאלטן	823	ɡəhˈaltn	rule	G	MED	prefix-rescue:gold+גע	
+אידיש	812	jˈidiʃ	lexicon	G	HIGH		
+אינמיטן	810	ˈinmitn	lexicon	G	HIGH		
+ס'זאל	809	szul	rule	G	MED	clitic	
+לאנגע	807	lˈanɡə	rule	G	LOW	alef-default	
+אזויפיל	807	ˈazɔjfil	rule	G	LOW	alef-default,pe-default	
+דעמאלטס	805	dˈɛmalʦ	rule	G	LOW	alef-default	
+ארץ	790	ˈɛrəʦ	lexicon	L	HIGH		
+נאכאמאל	787	nˈuxamul	lexicon	G	HIGH		
+אידישע	778	jˈidiʃə	lexicon	G	HIGH		
+זאג	776	zuɡ	lexicon	G	HIGH		
+היסטאריע	774	hˈistariə	rule	G	LOW	alef-default	
+וואלטן	750	vɔltn	lexicon	G	HIGH		
+פראצענט	726	prɔʦˈɛnt	lexicon	E	HIGH		
+אויג	706	ɔjɡ	rule	G	LOW	alef-default	
+כאטש	689	xɔʧ	lexicon	G	HIGH		
+אפריקע	688	ˈafrikə	rule	G	LOW	alef-default,pe-default	
+טאטע	684	tˈatə	lexicon	G	HIGH		
+פאקט	674	pakt	lexicon	G	MED	audio-pe	
+אנגעקומען	671	ˈunɡəkimən	rule	G	MED	prefix-rescue:gold+אנגע	ˈunɡəkimən
+דערפאר	669	dərfˈar	rule	G	MED	prefix-rescue:gold+דער	
+פארשטיי	668	farʃtˈaj	rule	G	LOW	alef-default,pe-default	
+אייביג	665	ˈajbiɡ	lexicon	G	HIGH		
+איידער	665	ˈajdər	rule	G	LOW	alef-default	
+דייטשלאנד	665	dˈajʧland	rule	G	LOW	alef-default	
+נאכט	654	naxt	lexicon	G	HIGH		
+דערמאנט	650	dərmˈant	rule	G	LOW	alef-default	
+וואנט	647	vant	rule	G	LOW	alef-default	vant
+האסטו	646	hˈusti	lexicon	G	HIGH		
+דאלאר	644	dˈɔlar	lexicon	G	HIGH		
+גראדע	626	ɡrˈadə	rule	G	LOW	alef-default	
+גאווערמענט	621	ɡavərmˈɛnt	rule	G	LOW	alef-default	
+אינפארמאציע	616	ˈinfarmaʦiə	rule	G	LOW	alef-default,pe-default	
+באלד	613	bald	rule	G	LOW	alef-default	
+געטראפן	613	ɡətrˈafn	rule	G	LOW	alef-default,pe-default	
+דארפסט	612	darfst	rule	G	LOW	alef-default,pe-default	
+קאמפיוטער	610	kˈamfjitər	rule	G	LOW	alef-default,pe-default	kampjˈutər
+קאפ	608	kɔp	lexicon	G	HIGH		
+יאנקעלע	606	jˈankələ	rule	G	LOW	alef-default	
+לאזן	604	luzn	lexicon	G	HIGH		
+פאראייניגטע	599	farˈajniɡtə	rule	G	LOW	alef-default,pe-default	
+אמת	598	ˈɛməs	lexicon	L	HIGH		
+אריבער	597	arˈibər	lexicon	G	HIGH		
+כאפן	596	xapn	lexicon	G	MED	audio-pe	
+שטארקע	595	ʃtˈarkə	lexicon	G	HIGH		
+פראגע	593	frˈaɡə	rule	G	LOW	alef-default,pe-default	
+טראמפ'ס	582	tramfs	rule	G	LOW	alef-default,pe-default	tramps
+פאלק	581	falk	rule	G	LOW	alef-default,pe-default	fɔlk
+אדמיניסטראציע	581	ˈadministraʦiə	rule	G	LOW	alef-default	
+פארהאן	580	farhˈan	lexicon	G	HIGH		
+אנקומען	578	ˈunkimən	rule	G	MED	prefix-rescue:gold+אנ	ˈunkimən
+אונזערע	575	ˈinzərə	rule	G	LOW	alef-default	
+אויספארשונג	569	ˈoʊsfarʃinɡ	rule	G	LOW	alef-default,pe-default	
+אומלעגאלע	569	ˈimləɡalə	rule	G	LOW	alef-default	
+פעדעראלע	566	fˈɛdəralə	rule	G	LOW	alef-default,pe-default	
+געארבעט	548	ɡəˈarbət	rule	G	MED	prefix-rescue:gold+גע	
+אירע	544	ˈirə	rule	G	LOW	alef-default	
+איינציגסטע	544	ˈajnʦiɡstə	rule	G	LOW	alef-default	
+מ'דארף	543	mdaf	rule	G	MED	clitic	mdarf
+וואכן	540	vɔxn	lexicon	G	HIGH		
+אוו	539	ɔv	lexicon	G	HIGH		
+פאסירט	537	fˈasirt	rule	G	LOW	alef-default,pe-default	pasˈirt
+פארשידענע	535	farʃˈidənə	rule	G	LOW	alef-default,pe-default	
+איינעם	533	ˈajnəm	lexicon	G	HIGH		
+אנשטאט	531	ˈanʃtat	rule	G	LOW	alef-default	
+צוואנציג	530	ʦvˈanʦiɡ	rule	G	LOW	alef-default	
+שפראך	529	ʃprax	rule	G	LOW	alef-default,pe-default	
+אוודאי	519	avˈadə	lexicon	G	HIGH		
+אייך	516	aːx	lexicon	G	HIGH		
+גאז	515	ɡaz	rule	G	LOW	alef-default	
+אויגן	510	ɔjɡn	rule	G	LOW	alef-default	
+אייראפע	509	ˈajrafə	rule	G	LOW	alef-default,pe-default	ajrˈɔpə
+פלאן	508	plaːn	lexicon	E	HIGH		
+באקאנט	505	bakˈant	rule	G	LOW	alef-default	
+אלטע	501	ˈaltə	lexicon	G	HIGH		
+וואשינגטאן	500	vˈaʃinɡtan	rule	G	LOW	alef-default	
+פארגעקומען	497	farɡəkˈimən	rule	G	MED	prefix-rescue:gold+פאר	
+מורא'דיג	495	mˈiradiɡ	rule	G	LOW	alef-default	mˈɔjrədiɡ
+פאליסי	492	fˈalisi	rule	G	LOW	alef-default,pe-default	pˈalisi
+מאלער	490	mˈalər	rule	G	LOW	alef-default	
+גראוויטי	490	ɡrˈaviti	rule	G	LOW	alef-default	
+קאמפיין	487	kɔmpˈajn	lexicon	E	HIGH		
+אבאמא	485	ˈɔbama	lexicon	G	HIGH		
+אכט	480	axt	rule	G	LOW	alef-default	
+פאראויס	478	farˈoʊs	rule	G	MED	prefix-rescue:gold+פאר	
+פארקערט	474	farkˈɛrt	rule	G	LOW	alef-default,pe-default	farkˈɛrt
+מורא'דיגע	472	mˈiradiɡə	rule	G	LOW	alef-default	mˈɔjrədiɡə
+שאלה	472	ʃˈaːlə	lexicon	L	HIGH		
+דעמאלט	470	dˈɛmalt	rule	G	LOW	alef-default	
+אריינגיין	465	arˈaːnɡajn	rule	G	LOW	alef-default	
+באנק	465	bank	rule	G	LOW	alef-default	
+גאנצן	463	ɡanʦn	rule	G	LOW	alef-default	
+האלב	459	halb	rule	G	LOW	alef-default	
+באשעפער	458	baʃˈɛfər	lexicon	G	HIGH		
+אנגעפאנגען	453	ˈanɡəfanɡən	rule	G	LOW	alef-default,pe-default	
+אנפאנגען	452	ˈanfanɡən	rule	G	LOW	alef-default,pe-default	
+נאמבער	449	nˈambər	rule	G	LOW	alef-default	
+דעמאקראט	448	dˈɛmakrat	rule	G	LOW	alef-default	
+אפיס	444	ˈɔfis	lexicon	E	HIGH		
+גענעראל	443	ɡənˈɛral	rule	G	LOW	alef-default	
+לכאורה	435	lixˈɔjrə	lexicon	L	HIGH		
+ראלע	435	rˈalə	rule	G	LOW	alef-default	
+אהער	433	ahˈɛr	rule	G	LOW	alef-default	
+פארמאגט	433	farmˈaɡt	rule	G	LOW	alef-default,pe-default	
+באט	432	bat	rule	G	LOW	alef-default	
+מאשין	432	mˈaʃin	rule	G	LOW	alef-default	
+וויבאלד	425	vˈibald	lexicon	G	HIGH		
+ארטיקל	424	ˈartikl	rule	G	LOW	alef-default	
+פראבלעמען	420	prˈɔbləmən	lexicon	G	HIGH		
+גאס	420	ɡaːs	lexicon	G	HIGH		
+אום	419	im	rule	G	LOW	alef-default	
+וויליאמסבורג	414	vˈiljamsburɡ	lexicon	E	HIGH		ˈviljamzburɡ
+האמיר	414	hamˈir	rule	G	LOW	alef-default	
+יואל	413	jˈɔjəl	lexicon	N	HIGH		
+דערנאך	412	dərnˈux	lexicon	G	HIGH		
+ארבעטער	411	ˈarbətər	rule	G	LOW	alef-default	
+וואוינען	409	vˈɔjnən	rule	G	LOW	alef-default	
+אנגערופן	409	ˈunɡərifn	rule	G	MED	prefix-rescue:gold+אנגע	
+סאוי	408	sɔj	rule	G	MED	clitic	
+אייער	404	ˈaːjər	lexicon	G	HIGH		
+שווארצע	404	ʃvˈarʦə	rule	G	LOW	alef-default	
+פארקויפן	401	farkˈɔjfn	rule	G	MED	prefix-rescue:gold+פאר	
+מארגן	399	mɔrɡn	lexicon	G	HIGH		
+אלעמאל	396	ˈaləmal	rule	G	LOW	alef-default	
+טאמער	395	tˈamər	rule	G	LOW	alef-default	
+מיליאנען	393	mˈilianən	rule	G	LOW	alef-default	
+קאמוניזם	391	kaminˈizm	rule	G	LOW	alef-default	
+קאמוניסטישע	387	kˈaministiʃə	rule	G	LOW	alef-default	
+קאנטראל	383	kˈantral	rule	G	LOW	alef-default	
+האנט	382	hant	rule	G	LOW	alef-default	
+האלבע	381	hˈalbə	rule	G	LOW	alef-default	
+זאלסט	377	zulst	lexicon	G	HIGH		
+פארק	377	park	lexicon	G	HIGH		
+אהרן	375	arn	rule	G	LOW	alef-default	
+אדורך	375	adˈirx	rule	G	LOW	alef-default	
+נאכן	374	nuxn	lexicon	G	HIGH		
+כאילו	373	xˈaːli	rule	G	LOW	alef-default	kəˈilə
+ראש	369	rɔjʃ	lexicon	L	HIGH		
+צאלן	368	ʦuln	lexicon	G	HIGH		
+אינטערסאנטע	365	ˈintərsantə	rule	G	LOW	alef-default	
+הארץ	364	harʦ	lexicon	G	HIGH		
+וואלן	362	valn	rule	G	LOW	alef-default	
+מארקעט	362	mˈarkət	rule	G	LOW	alef-default	
+געלאזט	360	ɡəlˈɔzt	rule	G	MED	prefix-rescue:gold+גע	
+גאווערנאר	359	ɡˈavərnar	rule	G	LOW	alef-default	
+פראנקרייך	359	frˈankrajx	rule	G	LOW	alef-default,pe-default	
+מאמע	358	mˈamə	rule	G	LOW	alef-default	
+אטאקע	357	ˈatakə	rule	G	LOW	alef-default	
+באשלאסן	357	baʃlˈasn	rule	G	LOW	alef-default	
+עלעקטראנס	357	ˈɛləktrans	rule	G	LOW	alef-default	
+פאלן	356	faln	rule	G	LOW	alef-default,pe-default	
+נאנט	355	nant	rule	G	LOW	alef-default	
+אייזן	352	ajzn	rule	G	LOW	alef-default	
+פארלוירן	351	farlˈɔjrn	rule	G	LOW	alef-default,pe-default	
+אופן	350	ifn	rule	G	LOW	alef-default,pe-default	ˈɔjfn
+געפארן	349	ɡəfˈarn	rule	G	LOW	alef-default,pe-default	ɡəfˈurn
+לאזט	349	lɔzt	lexicon	G	HIGH		
+אייבערשטער	348	ˈajbərʃtər	rule	G	LOW	alef-default	
+דאלער	347	dˈɔlər	lexicon	E	HIGH		
+פראגראם	347	prˈɔɡram	lexicon	G	HIGH		
+דזשאב	346	ʤab	rule	G	LOW	alef-default	
+געוואוינט	344	ɡəvˈɔjnt	rule	G	LOW	alef-default	
+טראכטן	344	traxtn	rule	G	LOW	alef-default	
+גראד	343	ɡrad	rule	G	LOW	alef-default	
+אינטערסאנט	341	intərsˈant	rule	G	LOW	alef-default	
+איראק	341	ˈirak	rule	G	LOW	alef-default	
+פאר'ן	340	farn	rule	G	LOW	alef-default,pe-default	
+קאמפעני	339	kˈamfəni	rule	G	LOW	alef-default,pe-default	kˈɔmpəni
+צאל	339	ʦal	rule	G	LOW	alef-default	
+סענאט	337	sˈɛnat	rule	G	LOW	alef-default	
+אריינגערעכנט	336	arˈaːnɡərəxnt	rule	G	LOW	alef-default	arˈaːnɡərɛxnt
+קלינטאן	334	klˈintan	rule	G	LOW	alef-default	
+באטראכט	334	batrˈaxt	rule	G	LOW	alef-default	
+אנהייבן	332	ˈunhajbn	lexicon	G	HIGH		
+איבערגעדרייט	331	ˈibərɡədrajt	rule	G	LOW	alef-default	
+באאמטע	328	baˈamtə	rule	G	LOW	alef-default	
+פאליסיס	327	fˈalisis	rule	G	LOW	alef-default,pe-default	pˈalisis
+אריינלייגן	327	arˈaːnlajɡn	rule	G	LOW	alef-default	
+פראנט	324	frant	rule	G	LOW	alef-default,pe-default	
+עראפלאן	324	ˈɛraflan	rule	G	LOW	alef-default,pe-default	ɛraplˈan
+אהין	321	ahˈin	rule	G	LOW	alef-default	
+געפאר	321	ɡəfˈar	rule	G	LOW	alef-default,pe-default	
+דעפארטמענט	320	dəfartmˈɛnt	rule	G	LOW	alef-default,pe-default	dipˈartmənt
+איינוואוינער	320	ˈajnvɔjnər	rule	G	LOW	alef-default	
+ארט	319	art	rule	G	LOW	alef-default	
+געהאלפן	318	ɡəhˈalfn	rule	G	LOW	alef-default,pe-default	
+בארא	317	barˈa	rule	G	LOW	alef-default	bˈɔrə
+פאלט	316	falt	rule	G	LOW	alef-default,pe-default	
+פארשטאנען	316	farʃtˈanən	rule	G	LOW	alef-default,pe-default	
+באקומט	313	bakˈimt	rule	G	MED	prefix-rescue:gold+בא	
+דורכאויס	313	dˈirxoʊs	rule	G	MED	prefix-rescue:gold+דורכ	
+סענאטאר	313	sˈɛnatar	rule	G	LOW	alef-default	
+אמעריקאנע	313	ˈamərikanə	rule	G	LOW	alef-default	
+געוואלד	313	ɡəvˈald	rule	G	LOW	alef-default	
+אפשטעלן	310	ˈafʃtəln	rule	G	LOW	alef-default,pe-default	ˈɔpʃtɛln
+ארגאניזאציע	308	ˈarɡanizaʦiə	rule	G	LOW	alef-default	
+אותיות	307	ɔjsˈijɔjs	rule	L	LOW	sefaria-pointed	
+באצאלן	306	baʦˈuln	rule	G	MED	prefix-rescue:gold+בא	
+אנגענומען	305	ˈunɡənimən	rule	G	MED	prefix-rescue:gold+אנ	
+דזשאו	304	ʤi	rule	G	LOW	alef-default	ʤoʊ
+טראץ	304	traʦ	rule	G	LOW	alef-default	
+קאוסט	303	kist	rule	G	LOW	alef-default	kɔst
+געכאפט	303	ɡəxˈapt	lexicon	G	HIGH		
+קאליפארניע	303	kˈalifarniə	rule	G	LOW	alef-default,pe-default	
+פארברעכן	303	farbrˈɛxn	rule	G	LOW	alef-default,pe-default	
+טאן	301	tan	rule	G	LOW	alef-default	tin
+אינפארמעישן	301	ˈinfarmajʃn	rule	G	LOW	alef-default,pe-default	
+מ'זאל	300	mzul	rule	G	MED	clitic	
+געדאנק	299	ɡədˈank	lexicon	G	HIGH		
+קאל	298	kal	rule	G	LOW	alef-default	kɔl
+געשטאנען	297	ɡəʃtˈanən	rule	G	LOW	alef-default	
+אויפגעשטעלט	297	ˈɔjfɡəʃtəlt	rule	G	LOW	alef-default,pe-default	ˈɔjfɡəʃtɛlt
+ביליאן	294	bˈiljɔn	lexicon	G	HIGH		
+שפיאנאזש	294	ʃpˈianaʒ	rule	G	LOW	alef-default,pe-default	
+אימיגראציע	294	ˈimiɡraʦiə	rule	G	LOW	alef-default	
+פאמיליע	293	fˈamiliə	lexicon	E	HIGH		
+דעמאקראטיע	293	dˈɛmakratiə	rule	G	LOW	alef-default	
+קאווע	292	kˈavə	rule	G	LOW	alef-default	
+פארגעסן	291	faːrɡˈɛsn	lexicon	G	HIGH		
+אברהם	291	ˈavrum	lexicon	N	HIGH		
+אהיים	286	ahˈajm	lexicon	G	HIGH		
+ראבערט	286	rˈabərt	rule	G	LOW	alef-default	
+אויסער	286	ˈoʊsər	rule	G	LOW	alef-default	
+אנהייב	285	ˈanhajb	rule	G	LOW	alef-default	
+מאן	283	mun	rule	G	MED	clitic	
+לאנדאן	283	lˈandan	rule	G	LOW	alef-default	
+נאכ'ן	283	nuxn	rule	L	LOW	model-pointed-guess	
+מאדעל	283	mˈɔdəl	lexicon	G	HIGH		
+געשטארבן	282	ɡəʃtˈarbn	rule	G	LOW	alef-default	
+אזויווי	282	ˈazɔjvi	rule	G	LOW	alef-default	
+פאל	282	fal	rule	G	LOW	alef-default,pe-default	
+ניטאמאל	281	nˈitamal	rule	G	LOW	alef-default	
+עקאנאמישע	278	ˈɛkanamiʃə	rule	G	LOW	alef-default	
+איבעראל	275	ˈibəral	rule	G	LOW	alef-default	
+פאליטיק	275	pɔlˈitik	lexicon	G	HIGH		
+באמערקט	275	bamˈɛrkt	rule	G	LOW	alef-default	
+באפעלקערונג	275	bafˈɛlkərinɡ	rule	G	LOW	alef-default,pe-default	
+אויבן	273	ɔjbn	rule	G	LOW	alef-default	
+קאלט	271	kalt	rule	G	LOW	alef-default	
+לאמיך	271	lˈamix	rule	G	LOW	alef-default	
+באר	271	bar	rule	G	LOW	alef-default	
+דערמאנען	271	dərmˈanən	rule	G	LOW	alef-default	
+היפאפאטימעס	271	hˈifafatiməs	rule	G	LOW	alef-default,pe-default	hipapˈataməs
+נארט	270	nart	rule	G	LOW	alef-default	
+פארשטעלן	269	farʃtˈɛln	rule	G	LOW	alef-default,pe-default	
+קאנדידאט	269	kˈandidat	rule	G	LOW	alef-default	
+איראנער	268	irˈanər	rule	G	LOW	alef-default	
+אייוורי	268	ˈajvri	rule	G	LOW	alef-default	
+ס'וואלט	267	svɔlt	rule	G	MED	clitic	
+איבערגענומען	265	ˈibərɡənimən	rule	G	MED	prefix-rescue:gold+איבער	
+פארקויפט	265	farkˈɔjft	rule	G	LOW	alef-default,pe-default	
+סאטמארער	263	sˈatmarər	rule	G	LOW	alef-default	

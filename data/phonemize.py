@@ -24,6 +24,7 @@ PUNCT = "״\"'.,!?;:()[]«»-–—…"
 HEBREW = re.compile(r"[\u05d0-\u05ea]")
 DEFAULT_OVERRIDES = Path(__file__).with_name("g2p_overrides.tsv")
 DEFAULT_VERIFIED = Path(__file__).with_name("g2p_verified.txt")
+NEXT_ROUND_OVERRIDES = Path(__file__).with_name("g2p_overrides_next.tsv")  # applied only with G2P_NEXT_ROUND=1
 
 
 def load_verified(path: str | Path | None = None) -> set[str]:
@@ -72,8 +73,14 @@ class Phonemizer:
         from yiddish_labels import text_to_ipa, token_detail  # noqa: E402
         self._to_ipa = text_to_ipa; self.token_detail = token_detail
         self.overrides = load_overrides(overrides); self.verified = load_verified()
+        # Next-round table: readings that contradict the engine's gold lexicon. They only make sense when training labels
+        # and renders BOTH use them, so they are off unless G2P_NEXT_ROUND=1 (materialize --next-round sets it; renders of a
+        # model trained that way must set it too).
+        self.next_round = os.environ.get("G2P_NEXT_ROUND") == "1"
+        if self.next_round and NEXT_ROUND_OVERRIDES.exists(): self.overrides.update(load_overrides(NEXT_ROUND_OVERRIDES))
         self.max_words = max([len(k.split()) for k in self.overrides] + [1])
         self.fingerprint = hashlib.sha1(json.dumps(sorted(self.overrides.items()), ensure_ascii=False).encode()).hexdigest()[:12]
+        self.max_words = max([len(k.split()) for k in self.overrides] + [1])
         self.cache_path = Path(cache_path) if cache_path else None
         self.cache: dict[str, str] = {}
         if self.cache_path and self.cache_path.exists():

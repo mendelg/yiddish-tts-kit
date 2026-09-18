@@ -1,0 +1,3 @@
+# NEXT-ROUND overrides: readings that contradict the engine's native-verified gold lexicon (layer G).
+# Applied only with G2P_NEXT_ROUND=1 (materialize --next-round / render --next-round), so training labels and renders
+# change together. Rulings come from Chezky on data/review_komets_pasekh.tsv. word<TAB>ipa, same inventory rules.

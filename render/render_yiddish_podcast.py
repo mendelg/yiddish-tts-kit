@@ -47,6 +47,7 @@ def main():
     p.add_argument("--dry-run", action="store_true", help="Print the normalized script and voices, load nothing")
     p.add_argument("--chunk-turns", type=int, default=0, help="Render the script in chunks of N turns (same voices) and join them with a short pause; avoids skipped turns and the ~60 s ceiling on long scripts. 0 = whole script at once")
     p.add_argument("--chunk-pause", type=float, default=0.35, help="Seconds of silence between chunks")
+    p.add_argument("--next-round", action="store_true", help="Apply data/g2p_overrides_next.tsv too (for adapters trained with materialize --next-round)")
     p.add_argument("--phonemize", action="store_true", help="Convert the script to IPA with Phonikud-yi first (for adapters trained with --text-mode ipa)")
     a = p.parse_args()
 
@@ -67,6 +68,7 @@ def main():
     raw = "\n".join(f"Speaker {names.index(s) + 1}: {x}" for s, x in turns)
     script, prompts, _ = normalize_script(raw, [voices[n] for n in names])
     if a.phonemize:
+        if a.next_round: os.environ["G2P_NEXT_ROUND"] = "1"
         import sys as _sys; _sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "data"))
         from phonemize import Phonemizer
         ph = Phonemizer()

@@ -10,7 +10,7 @@ are kept as they are. Voice prompts are 3-12 s clips of the same speaker (by `sp
 Downloads are cached; rerunning only converts what is missing. Files are fetched with the Hub's xet path
 (keep HF_HUB_ENABLE_HF_TRANSFER unset) and paced by rate limits automatically.
 """
-import argparse, csv, io, json, random, subprocess, sys, time
+import argparse, csv, io, json, os, random, subprocess, sys, time
 from collections import defaultdict
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
@@ -177,6 +177,7 @@ def main():
     ap.add_argument("--cap-per-speaker", type=int, default=3000, help="Max rows per speaker")
     ap.add_argument("--cap-hours-per-speaker", type=float, default=15.0, help="Max audio hours per speaker (uses manifest durations)")
     ap.add_argument("--workers", type=int, default=16); ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--next-round", action="store_true", help="Also apply data/g2p_overrides_next.tsv (readings that contradict the engine's gold lexicon); render that model with G2P_NEXT_ROUND=1")
     ap.add_argument("--phonemize-workers", type=int, default=1, help="Parallel engine processes for --text-mode ipa (the engine does ~450 chars/s per process)")
     ap.add_argument("--text-mode", choices=["text", "ipa"], default="text", help="ipa: phonemize all row text with Phonikud-yi (PHONIKUD_YI_BUNDLE); original kept in text_orig")
     ap.add_argument("--dry-run", action="store_true")
@@ -263,6 +264,7 @@ def main():
                                             text="\n".join(f"Speaker 0: {g['text'].replace(chr(10), ' ')}" for g in group), audio=str(dest),
                                             voice_prompts=[prompt({g["id"] for g in group})], duration=round(sum(g["dur"] for g in group) + sum(pauses), 3), num_speakers=1))
     if a.text_mode == "ipa":
+        if a.next_round: os.environ["G2P_NEXT_ROUND"] = "1"
         sys.path.insert(0, str(Path(__file__).resolve().parent))
         from phonemize import Phonemizer
         ph = Phonemizer(cache_path=a.cache / "phonemize_cache.json")
