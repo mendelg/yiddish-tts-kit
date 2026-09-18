@@ -1,7 +1,4 @@
 # Heimish/Hasidic pronunciation overrides applied on top of the Phonikud-yi engine (data/phonemize.py).
-# POLICY: never override a word the engine reads from its GOLD lexicon (native-verified; token_detail route=lexicon layer=G).
-# The model was trained on those labels, so changing them at render time only confuses it; gold fixes belong in Phonikud-yi.
-# Overrides are for LOW/MED words: loanwords, Hebrew-origin stress, the context reader's vowel flips.
 # key = Hebrew-script word or multiword phrase (whitespace separated, punctuation stripped); value = IPA in the
 # engine's closed inventory (vowels a aː ɛ ə i u ɔ ej aj ɔj oʊ; ˈ right before the stressed vowel).
 # Sources: engine LOW/MED-confidence words reviewed by ear (Fable) for the scripts and the training corpus.
@@ -36,15 +33,18 @@
 גמר	ɡmar
 חתימה	xasˈimə
 טובה	tˈɔjvə
+שכן	ʃˈɔxn
 שכנים	ʃxˈejnim
 עיקר	ˈikər
 לעיקוואד	lˈejkvud
 שיפונג	ʃˈipinɡ
 # --- from reviewing the sukkah/tefillin scripts in context (the ReNikud context reader flips ɛ/ə and u/a on some words)
+אווענט	ˈuvnt
 טראגעדיע	traɡˈɛdiə
 אויפגעשטעלט	ˈɔjfɡəʃtɛlt
 לענגערע	lˈɛnɡərə
 פארקערט	farkˈɛrt
+דארף	darf
 וואנט	vant
 געזעסן	ɡəzˈɛsn
 זוכן	zixn
@@ -85,7 +85,7 @@
 טאן	tin
 דזשאו	ʤoʊ
 קאוסט	kɔst
-בארא	bˈɔrə
+בארא	bˈɔrɔ
 קאל	kɔl
 גענטפערט	ɡəˈɛntfərt
 אריינגערעכנט	arˈaːnɡərɛxnt
@@ -179,6 +179,10 @@
 עראפלעין	ˈɛrɔplejn
 פראפעסאר	prɔfˈɛsɔr
 עראפלאנען	ɛraplˈanən
+חסידות	xsˈidəs
+חסידישע	xsˈidiʃə
+חסידישער	xsˈidiʃər
+חסידיש	xsˈidiʃ
 פערזענליך	pˈɛrzənləx
 פערזענליכע	pˈɛrzənləxə
 אליאירטע	aliˈirtə
@@ -199,6 +203,8 @@
 פעידזש	pejʤ
 פלאנעט	plˈanət
 פרוביר	prubˈir
+פרובירט	prubˈirt
+פרובירן	prubˈirn
 אויסגערעכנט	ˈoʊsɡərɛxnt
 קאונטי	kˈoʊnti
 פוינטס	pɔjnʦ
@@ -214,14 +220,21 @@
 מודה	mˈɔjdə
 נקודה	nəkˈidə
 # --- new scripts (chasene, shnei, bungalow)
+בדחן	bˈadxn
 פאריגע	fˈuriɡə
 פאפירן	papˈirn
+פאפיר	papˈir
 חתונות	xasˈinəs
 טרערן	trɛrn
+מחותנים	məxətˈunim
+מחותן	məxˈutn
 מענדל	mɛndl
+פארגעסן	farɡˈɛsn
 שאוול	ʃˈavəl
 בערל	bɛrl
+שכן'ס	ʃˈɔxns
 אויסגעגראבן	ˈɔjsɡəɡrubn
+מאנטיסעלא	mɔntisˈɛlɔ
 ראד	rud
 פלאט	flat
 ספער	spɛr
@@ -271,51 +284,6 @@
 ערד	ɛrd
 העלישע	hˈɛliʃə
 פלאמען	flˈamən
+ארויסגעגעבן	arˈɔjsɡəɡɛbn
 קראך	krax
 סצענע	sʦˈɛnə
-# --- Chezky's review of chasene/shnei/bungalow (2026-09-17), mapped onto the engine inventory (ɪ->i, ʊ->u, eɪ->ej, uː->u)
-בדחן	bˈadxən
-ארויסגענומען	arˈɔjsɡənimən
-ארויסגעגעבן	arˈɔjsɡəɡɛbn
-אנגעקומען	ˈunɡəkimən
-אנקומען	ˈunkimən
-געשען	ɡəʃˈejn
-מחותנים	məxutˈunim
-מחותן	məxˈutn
-אינדערהיים	indərhˈajm
-געפארן	ɡəfˈurn
-שכן	ʃˈuxn
-שכן'ס	ʃˈuxns
-מאנטיסעלא	mɔntisˈɛloʊ
-צווייטן	ʦvaːtn
-צווייטער	ʦvˈaːtər
-שניי	ʃnaː
-שטיי	ʃtaː
-וויי	vaː
-געמיינט	ɡəmˈaːnt
-מיינען	mˈaːnən
-הייסע	hˈaːsə
-הייס	haːs
-זיידן	zaːdn
-זיידע	zˈaːdə
-שמייכל	ʃmaːxl
-דערציילט	dərʦˈaːlt
-דערציילן	dərʦˈaːln
-אזייגער	azˈaːɡər
-רייזע	rˈaːzə
-קליינער	klˈaːnər
-שיינער	ʃˈaːnər
-וויינען	vˈaːnən
-געוויינט	ɡəvˈaːnt
-פריי	fraː
-ווייסן	vaːsn
-וויליאמסבורג	ˈviljamzburɡ
-# --- reviewer rulings on the v2/v3 files (gold-consistent): hall vs. 'zol', ze, Boro
-דער זאל	dɛr zal
-צו דער זאל	ʦi dɛr zal
-אין זאל	in zal
-זע	zɛ
-חסידישער	xsˈidiʃər
-חסידישע	xsˈidiʃə
-חסידיש	xsˈidiʃ
-חסידות	xsˈidəs
